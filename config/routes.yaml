@@ -1,0 +1,84 @@
+options_request:
+    path: /{request}
+    controller: App\Controller\DefaultController::handleOptionsRequest
+    methods: OPTIONS
+    requirements:
+        request: ".+"
+        
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+
+getRecipes:
+    path: /recipes/
+    controller: App\Controller\RecepieController::get
+    methods: GET
+
+getRecipesByID:
+    path: /recipes/{id}
+    controller: App\Controller\RecepieController::getByID
+    methods: GET
+
+postRecipe:
+    path: /recipes
+    controller: App\Controller\RecepieController::create
+    methods: POST
+
+updateRecipe:
+    path: /recipes/{id}
+    controller: App\Controller\RecepieController::update
+    methods: PUT
+    
+deleteRecipes:
+    path: /recipes/{id}
+    controller: App\Controller\RecepieController::delete
+    methods: DELETE
+
+getUsers:
+    path: /users
+    controller: App\Controller\UserController::get
+    methods: GET
+getUserByID:
+    path: /users/{id}
+    controller: App\Controller\UserController::getByID
+    methods: GET
+
+postUser:
+    path: /users
+    controller: App\Controller\UserController::create
+    methods: POST
+
+updateUser:
+    path: /users/{id}
+    controller: App\Controller\UserController::update
+    methods: PUT
+    
+deleteUser:
+    path: /users/{id}
+    controller: App\Controller\UserController::delete
+    methods: DELETE
+
+
+getIngredients:
+    path: /ingredients
+    controller: App\Controller\IngredientController::get
+    methods: GET
+getIngredientsByID:
+    path: /ingredients/{id}
+    controller: App\Controller\IngredientController::getByID
+    methods: GET
+
+postIngredients:
+    path: /ingredients
+    controller: App\Controller\IngredientController::create
+    methods: POST
+
+updateIngredients:
+    path: /ingredients/{id}
+    controller: App\Controller\IngredientController::update
+    methods: PUT
+    
+deleteIngredients:
+    path: /ingredients/{id}
+    controller: App\Controller\IngredientController::delete
+    methods: DELETE

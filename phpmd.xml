@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset>
+
+    <!-- Rues are imported individually to allow for easy configuration -->
+    <!-- Property names and values can be found here: http://phpmd.org/rules/index.html -->
+    <rule ref="rulesets/cleancode.xml">
+        <exclude name="StaticAccess" />
+    </rule>
+    <rule ref="rulesets/unusedcode.xml" />
+    <rule ref="rulesets/codesize.xml" />
+    <rule ref="rulesets/naming.xml" />
+    <rule ref="rulesets/design.xml" />
+    <rule ref="rulesets/controversial.xml" />
+
+</ruleset>

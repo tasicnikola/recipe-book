@@ -1,0 +1,19 @@
+
+###> symfony/framework-bundle ###
+/.gitlab-ci.yml
+/.env
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+/.idea/
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml.dist
+###< squizlabs/php_codesniffer ###
