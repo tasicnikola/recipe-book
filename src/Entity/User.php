@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
+use App\DTO\RequestParams\UserParams;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Type;
+use JsonSerializable;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'users')]
 #[ORM\HasLifecycleCallbacks]
-class User
+class User implements JsonSerializable, BaseEntityInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -36,10 +39,6 @@ class User
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updated = null;
-
-    #[ORM\ManyToOne(targetEntity: "App\Entity\Role")]
-    #[ORM\JoinColumn(name: 'role', referencedColumnName: 'id')]
-    private Role $role;
 
     public function getId(): int
     {
@@ -133,15 +132,26 @@ class User
         return $this;
     }
 
-    public function getRole(): Role
+    public function update(UserParams $params)
     {
-        return $this->role;
+        $this->name = $params->name;
+        $this->surname = $params->surname;
+        $this->email = $params->email;
+        $this->username = $params->username;
+        $this->password = $params->password;
     }
 
-    public function setRole(Role $role): self
+    public function jsonSerialize(): mixed
     {
-        $this->role = $role;
-
-        return $this;
+        return [
+            'guid' => $this->id,
+            'name' => $this->name,
+            'lastName' => $this->surname,
+            'email' => $this->email,
+            'role' => $this->username,
+            'team' => $this->password,
+            'createdAt' => $this->created,
+            'updatedAt' => $this->updated,
+        ];
     }
 }

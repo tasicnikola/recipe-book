@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-use App\DTO\Parameters;
+use App\DTO\RequestParams\Parameters;
 
 class IngredientDTO implements \JsonSerializable
 {
@@ -13,8 +13,8 @@ class IngredientDTO implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-                'id' => $this->id,
-                'name' => $this->name,
-               ];
+            'id'   => $this->id,
+            'name' => $this->name,
+        ];
     }
 }

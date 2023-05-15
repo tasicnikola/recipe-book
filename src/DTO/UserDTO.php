@@ -1,26 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTO;
 
-use App\Entity\Role;
-use App\DTO\RequestParams\Parameters;
+use DateTime;
+use DateTimeImmutable;
+use JsonSerializable;
 
 class UserDTO implements \JsonSerializable
 {
     public function __construct(
-        public int $id,
+        public string $id,
         public string $username,
         public string $password,
         public string $name,
         public string $surname,
         public string $email,
         public string $created,
-        public string $updated,
-        public Role $role
+        public ?string $updated,
         )
     {}
 
-    public function jsonSerialize(): array
+    public function jsonSerialize(): mixed
     {
         return  [
             'id' => $this->id,
@@ -31,7 +33,6 @@ class UserDTO implements \JsonSerializable
             'email' => $this->email,
             'created' => $this->created,
             'updated' => $this->updated,
-            'role' => $this->role,
         ];
     }
 }

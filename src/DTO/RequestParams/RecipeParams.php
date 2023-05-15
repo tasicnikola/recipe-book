@@ -1,9 +1,8 @@
 <?php
 
-namespace App\DTO;
+namespace App\DTO\RequestParams;
 
-use App\Entity\User;
-use App\DTO\Parameters;
+use App\DTO\RequestParams\Parameters;
 
 class RecipeParams implements Parameters
 {

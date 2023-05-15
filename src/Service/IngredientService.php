@@ -25,7 +25,8 @@ class IngredientService implements
     UpdateInterface
 {
     public function __construct(private IngredientRepository $repository)
-    {}
+    {
+    }
 
     public function get(): ?array
     {

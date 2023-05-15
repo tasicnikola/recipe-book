@@ -18,32 +18,32 @@ class RecipeValidator
     {
         $constraint = new Assert\Collection(
             [
-                'title'       => [
-                               new Assert\NotBlank(),
-                               new Assert\NotNull(),
-                               new Assert\Type(type:'string'),
-                              ],
-                'image'       => [
-                               new Assert\Url(),
-                               new Assert\NotNull(),
-                               new Assert\Type(type:'string'),
-                               new Assert\NotBlank(),
-                              ],
-                'user'        => [
-                               new Assert\NotNull(),
-                               new Assert\NotBlank(),
-                               new Assert\Type(type:'integer'),
+             'title'       => [
+                                  new Assert\NotBlank(),
+                                  new Assert\NotNull(),
+                                  new Assert\Type(type:'string'),
+                                 ],
+             'image'       => [
+                                  new Assert\Url(),
+                                  new Assert\NotNull(),
+                                  new Assert\Type(type:'string'),
+                                  new Assert\NotBlank(),
+                                 ],
+             'user'        => [
+                                  new Assert\NotNull(),
+                                  new Assert\NotBlank(),
+                                  new Assert\Type(type:'integer'),
 
-                              ],
-                'ingredients' => [
-                               new Assert\NotBlank(),
-                               new Assert\NotNull(),
-                              ],
-                'description' => [
-                               new Assert\NotBlank(),
-                               new Assert\Type(type:'string'),
-                               new Assert\NotNull(),
-                              ],
+                                 ],
+             'ingredients' => [
+                                  new Assert\NotBlank(),
+                                  new Assert\NotNull(),
+                                 ],
+             'description' => [
+                                  new Assert\NotBlank(),
+                                  new Assert\Type(type:'string'),
+                                  new Assert\NotNull(),
+                                 ],
             ]
         );
 

@@ -3,7 +3,7 @@
 namespace App\DTO;
 
 use App\Entity\User;
-use App\DTO\Parameters;
+use App\DTO\RequestParams\Parameters;
 
 class RecipeDTO implements \JsonSerializable
 {

@@ -2,15 +2,10 @@
 
 namespace App\Service;
 
-use App\Exception\CustomException;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Filesystem\Path;
-use Symfony\Component\Filesystem\Filesystem;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Recipe;
 use App\DTO\RecipeDTO;
-use App\DTO\Parameters;
+use App\DTO\RequestParams\Parameters;
 use App\Entity\User;
 use App\Entity\Ingredient;
 use App\Entity\RecipeIngredient;
@@ -32,8 +27,7 @@ public function __construct(
     private readonly ManagerRegistry $doctrine,
     private readonly RecipeRepository $recipeRepository,
     private readonly RecipeIngredientRepository $recipeIngredientRepository
-    )
-    {}
+) {}
 
     public function get(): ?array
     {

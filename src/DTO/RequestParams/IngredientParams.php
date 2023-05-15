@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTO;
+namespace App\DTO\RequestParams;
 
-use App\DTO\Parameters;
+use App\DTO\RequestParams\Parameters;
 
 class IngredientParams implements Parameters
 {
@@ -13,7 +13,7 @@ class IngredientParams implements Parameters
     public function jsonSerialize(): array
     {
         return [
-                'name' => $this->name,
-               ];
+            'name' => $this->name,
+        ];
     }
 }

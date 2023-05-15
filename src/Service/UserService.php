@@ -1,70 +1,71 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
-use App\Exception\CustomException;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Filesystem\Path;
-use Symfony\Component\Filesystem\Filesystem;
-use Doctrine\Persistence\ManagerRegistry;
+use App\DTO\Collection\Users;
 use App\Entity\User;
-use App\Entity\Role;
 use App\Repository\UserRepository;
-use Exception;
 use App\DTO\UserDTO;
-use App\DTO\Parameters;
+use App\DTO\RequestParams\UserParams;
+use App\Query\UserInterface;
+use App\Exception\NotFound\UserNotFoundException;
 
-class UserService implements
-    RetrieveInterface,
-    CreateInterface,
-    DeleteInterface,
-    UpdateInterface
+class UserService
 {
-public function __construct(
-    private ManagerRegistry $doctrine,
-    private UserRepository $repository
-    )
-    {}
-    
-    public function get(): ?array
+    public function __construct(
+        private UserRepository $repository,
+        private readonly UserInterface $userQuery
+    ) {
+    }
+
+    public function get(): ?Users
     {
-        return $this->repository->getAll();
+        return $this->userQuery->getAll();
     }
 
     public function getByID(int $id): ?UserDTO
     {
-        return $this->repository->get($id);
+        $user = $this->userQuery->getById($id);
+
+        if (null === $user) {
+            throw new UserNotFoundException($id);
+        }
+
+        return $user;
     }
 
-    public function create(Parameters $userDto): int
+    public function create(UserParams $params): int
     {
-        $user = new User();
+        $user = $this->repository->getEntityInstance();
+        $user->update($params);
+        $this->repository->save($user);
 
-        return $this->repository->save($this->setUser($user, $userDto));
+        return $user->getId();
     }
 
-    public function delete($id): void
+    public function delete(int $id): void
     {
-        $this->repository->delete($id);
+        $user = $this->findUser($id);
+        $this->repository->remove($user);
     }
 
-    public function update(int $id, Parameters $userDto): void
+    private function findUser(int $id): User
     {
         $user = $this->repository->find($id);
 
-        $this->repository->update($this->setUser($user, $userDto));
-    }
-
-    private function setUser(User $user, Parameters $userDto): User
-    {
-        $user->setUsername($userDto->username)
-            ->setPassword($userDto->password)
-            ->setName($userDto->name)
-            ->setSurname($userDto->surname)
-            ->setEmail($userDto->email)
-            ->setRole($this->doctrine->getManager()->getRepository(Role::class)->find($userDto->role));
+        if (null === $user) {
+            throw new UserNotFoundException($id);
+        }
 
         return $user;
+    }
+
+    public function update(int $id, UserParams $params): void
+    {
+        $user = $this->findUser($id);
+        $user->update($params);
+        $this->repository->save($user);
     }
 }
