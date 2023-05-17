@@ -2,19 +2,27 @@
 
 namespace App\DTO;
 
-use App\DTO\RequestParams\Parameters;
+use DateTime;
+use DateTimeImmutable;
+use JsonSerializable;
 
-class IngredientDTO implements \JsonSerializable
+class IngredientDTO implements JsonSerializable
 {
-    public function __construct(public int $id, public string $name)
-    {
+    public function __construct(
+        public int $id,
+        public string $name,
+        public DateTimeImmutable $createdAt,
+        public ?DateTime $updatedAt,
+    ) {
     }
 
-    public function jsonSerialize(): array
+    public function jsonSerialize(): mixed
     {
         return [
             'id'   => $this->id,
             'name' => $this->name,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
         ];
     }
 }

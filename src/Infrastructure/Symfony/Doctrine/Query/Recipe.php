@@ -9,6 +9,7 @@ use App\DTO\RecipeDTO;
 use App\Query\RecipeInterface;
 use Doctrine\DBAL\Connection;
 use DateTime;
+use DateTimeImmutable;
 
 class Recipe implements RecipeInterface
 {
@@ -26,8 +27,8 @@ class Recipe implements RecipeInterface
                 'title',
                 'image_url',
                 'description',
-                'created',
-                'updated',
+                'created_at',
+                'updated_at',
                 'ingredients'
             )
             ->from('recipes')
@@ -45,8 +46,8 @@ class Recipe implements RecipeInterface
                 'title',
                 'image_url',
                 'description',
-                'created',
-                'updated',
+                'created_at',
+                'updated_at',
                 'ingredients'
             )
             ->from('recipes')
@@ -70,8 +71,8 @@ class Recipe implements RecipeInterface
             $recipeData['title'],
             $recipeData['image_url'],
             $recipeData['description'],
-            $recipeData['created'],
-            $recipeData['updated'] ? new DateTime($recipeData['updated']) : null,
+            new DateTimeImmutable($recipeData['created_at']),
+            $recipeData['updated_at'] ? new DateTime($recipeData['updated_at']) : null,
             $recipeData['ingredients'],
         );
     }

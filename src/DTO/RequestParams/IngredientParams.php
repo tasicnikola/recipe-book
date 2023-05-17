@@ -2,18 +2,10 @@
 
 namespace App\DTO\RequestParams;
 
-use App\DTO\RequestParams\Parameters;
-
-class IngredientParams implements Parameters
+class IngredientParams
 {
-    public function __construct(public string $name)
-    {
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'name' => $this->name,
-        ];
+    public function __construct(
+        public readonly string $name
+    ) {
     }
 }

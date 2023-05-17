@@ -19,25 +19,24 @@ class UserRepository extends ServiceEntityRepository implements RepositoryInterf
         parent::__construct($registry, User::class);
     }
 
-    public function  getEntityInstance(): User
+    public function getEntityInstance(): User
     {
         return new User();
     }
 
-    
-    public function createBulk(array $users): void
-    {
-        try {
-            $this->getEntityManager()->beginTransaction();
+    // public function createBulk(array $users): void
+    // {
+    //     try {
+    //         $this->getEntityManager()->beginTransaction();
 
-            foreach ($users as $user) {
-                $this->getEntityManager()->persist($user);
-            }
-            $this->getEntityManager()->flush();
-            $this->getEntityManager()->commit();
-        } catch (Exception $e) {
-            $this->getEntityManager()->rollback();
-            throw $e;
-        }
-    }
+    //         foreach ($users as $user) {
+    //             $this->getEntityManager()->persist($user);
+    //         }
+    //         $this->getEntityManager()->flush();
+    //         $this->getEntityManager()->commit();
+    //     } catch (Exception $e) {
+    //         $this->getEntityManager()->rollback();
+    //         throw $e;
+    //     }
+    // }
 }

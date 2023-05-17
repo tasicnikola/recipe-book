@@ -3,7 +3,9 @@
 namespace App\DTO;
 
 use App\Entity\User;
-use App\DTO\RequestParams\Parameters;
+use DateTime;
+use DateTimeImmutable;
+use JsonSerializable;
 
 class RecipeDTO implements \JsonSerializable
 {
@@ -13,8 +15,8 @@ class RecipeDTO implements \JsonSerializable
         public string $image,
         public string $description,
         public User $user,
-        public ?string $created,
-        public ?string $updated,
+        public DateTimeImmutable $createdAt,
+        public ?DateTime $updatedAt,
         public array $ingredients
         )
     {}
@@ -27,8 +29,8 @@ class RecipeDTO implements \JsonSerializable
             'image' => $this->image,
             'description' => $this->description,
             'user' => $this->user,
-            'created' => $this->created,
-            'updated' => $this->updated,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
             'ingredients' => $this->ingredients,
         ];
     }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\DTO\RequestParams;
 
-use App\DTO\RequestParams\Parameters;
-
 class UserParams
 {
     public function __construct(

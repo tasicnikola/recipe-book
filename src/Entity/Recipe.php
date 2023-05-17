@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\RecipeRepository;
 use Doctrine\DBAL\Types\Types;
@@ -12,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'recipes')]
 class Recipe
 {
+    use TimestampableTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -25,12 +28,6 @@ class Recipe
 
     #[ORM\Column(type: Types::TEXT)]
     private string $description;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private \DateTimeInterface $created;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $updated = null;
 
     #[ORM\ManyToOne(targetEntity: "App\Entity\User")]
     #[ORM\JoinColumn(name: 'user', referencedColumnName: 'id')]
@@ -81,33 +78,6 @@ class Recipe
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getCreated(): \DateTimeImmutable
-    {
-        return $this->created;
-    }
-
-    #[ORM\PrePersist]
-    public function setCreated(): self
-    {
-        $this->created = new \DateTimeImmutable();
-
-        return $this;
-    }
-
-    public function getUpdated(): ?\DateTimeInterface
-    {
-        return $this->updated;
-    }
-
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function setUpdated(): self
-    {
-        $this->updated = new \DateTime();
 
         return $this;
     }

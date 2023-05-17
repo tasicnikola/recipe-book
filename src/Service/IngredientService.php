@@ -2,60 +2,68 @@
 
 namespace App\Service;
 
-use App\Exception\CustomException;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Filesystem\Path;
-use Symfony\Component\Filesystem\Filesystem;
-use Doctrine\Persistence\ManagerRegistry;
+use App\DTO\Collection\Ingredients;
 use App\Entity\Ingredient;
 use App\DTO\IngredientDTO;
-use App\DTO\Parameters;
+use App\DTO\RequestParams\IngredientParams;
+use App\Query\IngredientInterface;
 use App\Repository\IngredientRepository;
-use Exception;
-use App\Service\RetrieveInterface;
-use App\Service\CreateInterface;
-use App\Service\DeleteInterface;
-use App\Service\UpdateInterface;
+use App\Exception\NotFound\IngredientNotFoundException;
 
-class IngredientService implements
-    RetrieveInterface,
-    CreateInterface,
-    DeleteInterface,
-    UpdateInterface
+class IngredientService
 {
-    public function __construct(private IngredientRepository $repository)
-    {
+    public function __construct(
+        private IngredientRepository $repository,
+        private readonly IngredientInterface $query
+    ) {
     }
 
-    public function get(): ?array
+    public function get(): ?Ingredients
     {
-        return $this->repository->getAll();
+        return $this->query->getAll();
     }
 
     public function getByID(int $id): ?IngredientDTO
     {
-        return $this->repository->get($id);
+        $ingredient = $this->query->getByID($id);
+
+        if (null === $ingredient) {
+            throw new IngredientNotFoundException($id);
+        }
+
+        return $ingredient;
     }
 
-    public function create(Parameters $ingredientParams): int
+    public function create(IngredientParams $params): int
     {
-        $ingredient = new Ingredient();
-        $ingredient->setName($ingredientParams->name);
+        $ingredient = $this->repository->getEntityInstance();
+        $ingredient->update($params);
+        $this->repository->save($ingredient);
 
-        return $this->repository->save($ingredient);
+        return $ingredient->getId();
     }
 
     public function delete(int $id): void
     {
-        $this->repository->delete($id);
+        $ingredient = $this->findIngredient($id);
+        $this->repository->remove($ingredient);
     }
 
-    public function update(int $id, Parameters $ingredientParams): void
+    public function update(int $id, IngredientParams $params): void
+    {
+        $ingredient = $this->findIngredient($id);
+        $ingredient->update($params);
+        $this->repository->save($ingredient);
+    }
+
+    private function findIngredient(int $id): Ingredient
     {
         $ingredient = $this->repository->find($id);
-        $ingredient->setName($ingredientParams->name);
 
-        $this->repository->update($ingredient);
+        if (null === $ingredient) {
+            throw new IngredientNotFoundException($id);
+        }
+
+        return $ingredient;
     }
 }

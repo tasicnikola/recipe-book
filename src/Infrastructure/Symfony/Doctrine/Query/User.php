@@ -28,8 +28,8 @@ class User implements UserInterface
                 'email',
                 'username',
                 'password',
-                'created',
-                'updated'
+                'created_at',
+                'updated_at'
             )
             ->from('users')
             ->orderBy('name', 'ASC')
@@ -48,8 +48,8 @@ class User implements UserInterface
             'email',
             'username',
             'password',
-            'created',
-            'updated'
+            'created_at',
+            'updated_at'
         )
         ->from('users')
             ->where('id = ?')
@@ -73,8 +73,8 @@ class User implements UserInterface
             $userData['email'],
             $userData['username'],
             $userData['password'],
-            new DateTimeImmutable( $userData['created']),
-            $userData['updated'] ? new DateTime($userData['updated']) : null,
+            new DateTimeImmutable($userData['created_at']),
+            $userData['updated_at'] ? new DateTime($userData['updated_at']) : null,
         );
     }
 }

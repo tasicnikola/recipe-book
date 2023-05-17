@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\DTO\RequestParams\UserParams;
+use App\Entity\Trait\TimestampableTrait;
 use App\Repository\UserRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
@@ -13,6 +13,8 @@ use JsonSerializable;
 #[ORM\HasLifecycleCallbacks]
 class User implements JsonSerializable, BaseEntityInterface
 {
+    use TimestampableTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -32,12 +34,6 @@ class User implements JsonSerializable, BaseEntityInterface
 
     #[ORM\Column(length: 50)]
     private ?string $email = null;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private \DateTimeInterface $created;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $updated = null;
 
     public function getId(): int
     {
@@ -104,33 +100,6 @@ class User implements JsonSerializable, BaseEntityInterface
         return $this;
     }
 
-    public function getCreated(): \DateTimeInterface
-    {
-        return $this->created;
-    }
-
-    #[ORM\PrePersist]
-    public function setCreated(): self
-    {
-        $this->created = new \DateTimeImmutable();
-
-        return $this;
-    }
-
-    public function getUpdated(): ?\DateTimeInterface
-    {
-        return $this->updated;
-    }
-
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function setUpdated(): self
-    {
-        $this->updated = new \DateTime();
-
-        return $this;
-    }
-
     public function update(UserParams $params)
     {
         $this->name = $params->name;
@@ -149,8 +118,8 @@ class User implements JsonSerializable, BaseEntityInterface
             'email' => $this->email,
             'role' => $this->username,
             'team' => $this->password,
-            'createdAt' => $this->created,
-            'updatedAt' => $this->updated,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
         ];
     }
 }

@@ -2,23 +2,19 @@
 
 namespace App\Controller;
 
-use App\Exception\CustomException;
+use App\Controller\Trait\JsonResponseTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Path;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use App\Service\IngredientService;
 use Exception;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Flex\Recipe;
 use App\DTO\IngredientParams;
+use App\Request\Ingredient\Ingredient as IngredientRequest;
 
 class IngredientController extends AbstractController
 {
+    use JsonResponseTrait;
+
     public function __construct(private IngredientService $service)
     {
     }
@@ -26,51 +22,51 @@ class IngredientController extends AbstractController
     public function get(): JsonResponse
     {
         try {
-            return $this->json($this->service->get());
-        } catch (CustomException $e) {
-            return  ($e->errorMessage());
+            return $this->jsonResponse($this->service->get());
+        } catch (Exception $e) {
+            return  $this->exceptionJsonResponse($e);
         }
     }
 
     public function getByID(int $id): JsonResponse
     {
         try {
-            return $this->json($this->service->getByID($id));
-        } catch (CustomException $e) {
-            return  ($e->errorMessage());
+            return $this->jsonResponse($this->service->getByID($id));
+        } catch (Exception $e) {
+            return  $this->exceptionJsonResponse($e);
         }
     }
 
-    public function create(Request $request): JsonResponse
+    public function create(IngredientRequest $request): JsonResponse
     {
         try {
-            $content = json_decode($request->getContent(), true);
-            $ingredient = new IngredientParams($content['name']);
+            $id = $this->service->create($request->params());
 
-            return $this->json($this->service->create($ingredient));
-        } catch (CustomException $e) {
-            return  ($e->errorMessage());
+            return $this->jsonResponseCreated($id);
+        } catch (Exception $e) {
+            return  $this->exceptionJsonResponse($e);
         }
     }
 
-    public function update(int $id, Request $request): JsonResponse
+    public function update(int $id, IngredientRequest $request): JsonResponse
     {
         try {
-            $content = json_decode($request->getContent(), true);
-            $ingredient = new IngredientParams($content['name']);
+            $this->service->update($id, $request->params());
 
-            return $this->json($this->service->update($id, $ingredient));
-        } catch (CustomException $e) {
-            return  ($e->errorMessage());
+            return $this->jsonResponseNoContent();
+        } catch (Exception $e) {
+            return $this->exceptionJsonResponse($e);
         }
     }
 
     public function delete(int $id): JsonResponse
     {
         try {
-            return $this->json($this->service->delete($id));
-        } catch (CustomException $e) {
-            return  ($e->errorMessage());
+            $this->service->delete($id);
+
+            return $this->jsonResponseNoContent();
+        } catch (Exception $e) {
+            return $this->exceptionJsonResponse($e);
         }
     }
 }

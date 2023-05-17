@@ -17,8 +17,8 @@ class UserDTO implements JsonSerializable
         public readonly string $email,
         public readonly string $username,
         public readonly string $password,
-        public DateTimeImmutable $created,
-        public ?DateTime $updated,
+        public DateTimeImmutable $createdAt,
+        public ?DateTime $updatedAt,
         )
     {}
 
@@ -31,8 +31,8 @@ class UserDTO implements JsonSerializable
             'email' => $this->email,
             'username' => $this->username,
             'password' => $this->password,
-            'created' => $this->created,
-            'updated' => $this->updated,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
         ];
     }
 }
