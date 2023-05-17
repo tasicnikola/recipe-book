@@ -6,7 +6,6 @@ use App\DTO\RequestParams\UserParams;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\DBAL\Types\Type;
 use JsonSerializable;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]

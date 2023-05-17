@@ -36,9 +36,6 @@ class EventSubscriber implements EventSubscriberInterface
             if (strpos($request->getRequest()->getPathInfo(), '/recipes') === 0) {
                 $recipeValidator = new RecipeValidator();
                 $recipeValidator->validate($content);
-            }elseif (strpos($request->getRequest()->getPathInfo(), '/users') === 0) {
-                $userValidator = new UserValidator();
-                $userValidator->validate($content);
             }
         }
     }

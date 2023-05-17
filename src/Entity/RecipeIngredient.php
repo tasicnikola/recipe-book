@@ -6,6 +6,7 @@ use App\Repository\RecipeIngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RecipeIngredientRepository::class)]
+#[ORM\Table(name: 'recipeIngredients')]
 class RecipeIngredient
 {
     #[ORM\Id, ORM\ManyToOne(targetEntity:"App\Entity\Recipe", inversedBy:"recipeIngredient")]

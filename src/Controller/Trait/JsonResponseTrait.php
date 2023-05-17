@@ -19,26 +19,26 @@ trait JsonResponseTrait
         return new JsonResponse("", JsonResponse::HTTP_NO_CONTENT);
     }
 
-    private function jsonResponseCreated(string $guid): JsonResponse
+    private function jsonResponseCreated(string $id): JsonResponse
     {
         return new JsonResponse(
-            ['guid' => $guid],
+            ['id' => $id],
             JsonResponse::HTTP_CREATED
         );
     }
 
     private function exceptionJsonResponse(Exception $e): JsonResponse
     {
-        // $code = $e->getCode() ?? JsonResponse::HTTP_INTERNAL_SERVER_ERROR;
+        $code = $e->getCode() ?? JsonResponse::HTTP_INTERNAL_SERVER_ERROR;
 
         return new JsonResponse(
             [
              'error' => [
-                    // 'code' => $code,
+                    'code' => $code,
                             'message' => $e->getMessage(),
                            ],
             ],
-            // $code
+            $code
         );
     }
 }

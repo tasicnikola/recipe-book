@@ -6,10 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\RecipeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\DBAL\Types\Type;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: 'recipes')]
 class Recipe
 {
     #[ORM\Id]

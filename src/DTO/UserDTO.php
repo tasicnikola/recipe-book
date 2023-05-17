@@ -8,17 +8,17 @@ use DateTime;
 use DateTimeImmutable;
 use JsonSerializable;
 
-class UserDTO implements \JsonSerializable
+class UserDTO implements JsonSerializable
 {
     public function __construct(
-        public string $id,
-        public string $username,
-        public string $password,
-        public string $name,
-        public string $surname,
-        public string $email,
-        public string $created,
-        public ?string $updated,
+        public readonly int $id,
+        public readonly string $name,
+        public readonly string $surname,
+        public readonly string $email,
+        public readonly string $username,
+        public readonly string $password,
+        public DateTimeImmutable $created,
+        public ?DateTime $updated,
         )
     {}
 
@@ -26,11 +26,11 @@ class UserDTO implements \JsonSerializable
     {
         return  [
             'id' => $this->id,
-            'username' => $this->username,
-            'password' => $this->password,
             'name' => $this->name,
             'surname' => $this->surname,
             'email' => $this->email,
+            'username' => $this->username,
+            'password' => $this->password,
             'created' => $this->created,
             'updated' => $this->updated,
         ];

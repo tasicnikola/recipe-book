@@ -7,7 +7,6 @@ use App\Request\User\User as UserRequestInterface;
 use App\Infrastructure\Symfony\Request\Request;
 use Symfony\Component\Validator\Constraints\Collection;
 use App\Infrastructure\Symfony\Request\NameRequirements;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Type;
@@ -49,7 +48,7 @@ class User extends Request implements UserRequestInterface
                 self::FIELD_EMAIL    => [
                     new Type('string'),
                     new Length(
-                        min: 22,
+                        min: 15,
                         max: 50,
                         minMessage: 'Your email must be at least {{ limit }} characters long',
                         maxMessage: 'Your email cannot be longer than {{ limit }} characters',

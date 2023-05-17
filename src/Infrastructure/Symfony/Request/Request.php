@@ -28,16 +28,16 @@ abstract class Request
 
     public function __construct(RequestStack $stack, ValidatorInterface $validator, private readonly CheckUniqueInterface $uniqueQuery)
     {
+
         $request = $stack->getCurrentRequest();
         if (is_null($request)) {
             throw new InvalidArgumentException('Request does not exist.');
         }
-
+        
         $method = $request->getMethod();
 
         $this->httpRequest = $request;
         $this->validator = $validator;
-
         $this->mergeAllParameters();
         $this->validateUnique($method);
         $this->validate();
@@ -83,7 +83,6 @@ abstract class Request
     private function validate(): void
     {
         $violations = $this->validator->validate($this->parameters(), $this->rules());
-
         if ($violations->count()) {
             throw new ValidationException($this->getErrorsList($violations));
         }
@@ -96,7 +95,7 @@ abstract class Request
         foreach ($violations as $violation) {
             $errorsList->add(
                 new ValidationError(
-                    $this->getPropertyName($violation->getProperyPath()),
+                    $this->getPropertyName($violation->getPropertyPath()),
                     $violation->getMessage()
                 )
             );

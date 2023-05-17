@@ -5,21 +5,16 @@ namespace App\Controller;
 use App\Exception\CustomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Path;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use App\Service\RecipeService;
+use App\DTO\RequestParams\RecipeParams;
 use Exception;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Flex\Recipe;
-use App\DTO\RecipeParams;
-use App\Entitiy\User;
+use App\Controller\Trait\JsonResponseTrait;
 
 class RecepieController extends AbstractController
 {
+    use JsonResponseTrait;
+
     public function __construct(private RecipeService $service)
     {
     }
@@ -27,18 +22,18 @@ class RecepieController extends AbstractController
     public function get(): JsonResponse
     {
         try {
-            return $this->json($this->service->get());
-        } catch (CustomException $e) {
-            return  ($e->errorMessage());
+            return $this->jsonResponse($this->service->get());
+        } catch (Exception $e) {
+            return $this->exceptionJsonResponse($e);
         }
     }
 
-    public function getByID($id): JsonResponse
+    public function getByID(int $id): JsonResponse
     {
         try {
-            return $this->json($this->service->getByID($id));
-        } catch (CustomException $e) {
-            return  ($e->errorMessage());
+            return $this->jsonResponse($this->service->getByID($id));
+        } catch (Exception $e) {
+            return $this->exceptionJsonResponse($e);
         }
     }
 
@@ -56,7 +51,7 @@ class RecepieController extends AbstractController
 
             return $this->json($this->service->create($recipeDto));
         } catch (CustomException $e) {
-            return  ($e->errorMessage());
+            return ($e->errorMessage());
         }
     }
 
@@ -75,16 +70,18 @@ class RecepieController extends AbstractController
 
             return $this->json($this->service->update($id, $recipeDto));
         } catch (CustomException $e) {
-            return  ($e->errorMessage());
+            return ($e->errorMessage());
         }
     }
 
-    public function delete($id): JsonResponse
+    public function delete(int $id): JsonResponse
     {
         try {
-            return $this->json($this->service->delete($id));
-        } catch (CustomException $e) {
-            return  ($e->errorMessage());
+            $this->service->delete($id);
+
+            return $this->jsonResponseNoContent();
+        } catch (Exception $e) {
+            return $this->exceptionJsonResponse($e);
         }
     }
 }

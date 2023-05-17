@@ -6,7 +6,6 @@ namespace App\Infrastructure\Symfony\Doctrine\Query;
 
 use App\DTO\Collection\Users;
 use App\DTO\UserDTO;
-use App\Enum\Role;
 use App\Query\UserInterface;
 use DateTime;
 use DateTimeImmutable;
@@ -74,8 +73,8 @@ class User implements UserInterface
             $userData['email'],
             $userData['username'],
             $userData['password'],
-            $userData['created_at'],
-            $userData['updated_at'] ? new DateTime($userData['updated_at']) : null,
+            new DateTimeImmutable( $userData['created']),
+            $userData['updated'] ? new DateTime($userData['updated']) : null,
         );
     }
 }
