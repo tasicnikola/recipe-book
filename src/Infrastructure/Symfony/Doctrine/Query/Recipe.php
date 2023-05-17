@@ -15,10 +15,10 @@ class Recipe implements RecipeInterface
 {
     public function __construct(
         private readonly Connection $connection,
-    ){
+    ) {
     }
 
-    public function getAll() : ?Recipes
+    public function getAll(): ?Recipes
     {
         $recipesData = $this->connection->createQueryBuilder('recipes')
             ->select(
@@ -33,11 +33,11 @@ class Recipe implements RecipeInterface
             )
             ->from('recipes')
             ->fetchAllAssociative();
-        
+
         return new Recipes(array_map(fn(array $recipeData) => $this->createDTO($recipeData), $recipesData));
     }
 
-    public function getById(int $id) : ?RecipeDTO
+    public function getById(int $id): ?RecipeDTO
     {
         $recipeData = $this->connection->createQueryBuilder()
             ->select(
@@ -55,14 +55,14 @@ class Recipe implements RecipeInterface
             ->setParameter(0, $id)
             ->fetchAssociative();
 
-        if(false === $recipeData) {
+        if (false === $recipeData) {
             return null;
         }
 
         return $this->createDTO($recipeData);
     }
 
-    private function createDTO(array $recipeData) : RecipeDTO
+    private function createDTO(array $recipeData): RecipeDTO
     {
         return new RecipeDTO(
             $recipeData['id'],

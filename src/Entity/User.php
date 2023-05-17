@@ -112,12 +112,12 @@ class User implements JsonSerializable, BaseEntityInterface
     public function jsonSerialize(): mixed
     {
         return [
-            'guid' => $this->id,
-            'name' => $this->name,
-            'lastName' => $this->surname,
-            'email' => $this->email,
-            'role' => $this->username,
-            'team' => $this->password,
+            'guid'       => $this->id,
+            'name'       => $this->name,
+            'lastName'   => $this->surname,
+            'email'      => $this->email,
+            'role'       => $this->username,
+            'team'       => $this->password,
             'created_at' => $this->createdAt,
             'updated_at' => $this->updatedAt,
         ];

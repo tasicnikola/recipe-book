@@ -11,5 +11,5 @@ interface UserInterface
 {
     public function getAll(): Users;
 
-    public function getById(int $guid): ?UserDTO;
+    public function getById(int $id): ?UserDTO;
 }

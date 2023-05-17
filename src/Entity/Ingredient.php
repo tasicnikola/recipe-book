@@ -40,7 +40,7 @@ class Ingredient implements JsonSerializable, BaseEntityInterface
 
         return $this;
     }
-    
+
     public function update(IngredientParams $params)
     {
         $this->name = $params->name;
@@ -49,8 +49,8 @@ class Ingredient implements JsonSerializable, BaseEntityInterface
     public function jsonSerialize(): mixed
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id'         => $this->id,
+            'name'       => $this->name,
             'created_at' => $this->createdAt,
             'updated_at' => $this->updatedAt,
         ];

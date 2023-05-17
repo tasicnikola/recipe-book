@@ -12,6 +12,7 @@ class CheckUnique implements CheckUniqueInterface
     public function __construct(private readonly Connection $connection)
     {
     }
+
     public function checkUnique(array $uniqueParams, string $table, ?int $id): array
     {
         $queryBuilder = $this->connection->createQueryBuilder()

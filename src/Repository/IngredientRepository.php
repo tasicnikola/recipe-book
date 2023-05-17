@@ -18,7 +18,7 @@ class IngredientRepository extends ServiceEntityRepository implements Repository
         parent::__construct($registry, Ingredient::class);
     }
 
-    public function  getEntityInstance(): Ingredient
+    public function getEntityInstance(): Ingredient
     {
         return new Ingredient();
     }

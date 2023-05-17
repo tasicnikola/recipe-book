@@ -33,7 +33,7 @@ abstract class Request
         if (is_null($request)) {
             throw new InvalidArgumentException('Request does not exist.');
         }
-        
+
         $method = $request->getMethod();
 
         $this->httpRequest = $request;
@@ -63,8 +63,7 @@ abstract class Request
 
     protected function getParameter(string $parameterName): ?string
     {
-        return $this->parameterExist($parameterName) && null !== $this->parameters[$parameterName] ?
-            (string)$this->parameters[$parameterName] : null;
+        return $this->parameterExist($parameterName) && null !== $this->parameters[$parameterName] ? (string) $this->parameters[$parameterName] : null;
     }
 
     protected function getArrayParameter(string $parameterName): array

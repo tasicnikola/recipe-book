@@ -63,7 +63,6 @@ class User implements UserInterface
         return $this->createDTO($userData);
     }
 
-
     private function createDTO(array $userData): UserDTO
     {
         return new UserDTO(

@@ -55,7 +55,6 @@ class Ingredient implements IngredientInterface
         return $this->createDTO($ingredientData);
     }
 
-
     private function createDTO(array $ingredientData): IngredientDTO
     {
         return new IngredientDTO(
