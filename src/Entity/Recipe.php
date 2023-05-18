@@ -132,15 +132,15 @@ class Recipe implements JsonSerializable, BaseEntityInterface
     public function jsonSerialize(): mixed
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'image_url' => $this->imageUrl,
-            'description' => $this->description,
-            'user' => $this->user,
-            'ingredients' => $this->ingredients,
-            'created_at' => $this->createdAt,
-            'updated_at' => $this->updatedAt,
-        ];
+                'id'          => $this->id,
+                'title'       => $this->title,
+                'image_url'   => $this->imageUrl,
+                'description' => $this->description,
+                'user'        => $this->user,
+                'ingredients' => $this->ingredients,
+                'created_at'  => $this->createdAt,
+                'updated_at'  => $this->updatedAt,
+               ];
     }
 
     public function update(RecipeParams $params, User $user): void

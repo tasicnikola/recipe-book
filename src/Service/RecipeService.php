@@ -35,7 +35,7 @@ class RecipeService
 
     public function getByID(int $id): ?RecipeDTO
     {
-        $recipe =  $this->query->getByID($id);
+        $recipe = $this->query->getByID($id);
 
         if (null === $recipe) {
             throw new  RecipeNotFoundException($id);
@@ -55,7 +55,7 @@ class RecipeService
         $ingredients = new ArrayCollection();
 
         foreach ($params->ingredients->params as $ingredientParams) {
-            $ingredient =  $this->ingredientRepository->getEntityInstance();
+            $ingredient = $this->ingredientRepository->getEntityInstance();
             $ingredient->update($ingredientParams, $recipe);
             $ingredients->add($ingredient);
         }
@@ -69,11 +69,10 @@ class RecipeService
 
     public function delete(int $id): void
     {
-        $recipe =  $this->getRecipeEntity($id);
+        $recipe = $this->getRecipeEntity($id);
 
         $this->repository->remove($recipe);
     }
-
 
     public function update(int $id, RecipeParams $params): void
     {
@@ -101,7 +100,7 @@ class RecipeService
     {
         $recipe = $this->repository->find($id);
 
-        if (null  === $recipe) {
+        if (null === $recipe) {
             throw new RecipeNotFoundException($id);
         }
 

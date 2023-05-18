@@ -15,13 +15,17 @@ use Symfony\Component\Validator\Constraints\Url;
 
 class Recipe extends Request implements RecipeRequestInteface
 {
-
     public function params(): RecipeParams
     {
         $ingredientsData = $this->getArrayParameter(self::FIELD_INGREDIENTS);
-        $ingredientsObject  = new IngredientsParams(...array_map(fn (array $ingredientData) => new IngredientParams(
-            $ingredientData['name'],
-        ), $ingredientsData));
+        $ingredientsObject  = new IngredientsParams(
+            ...array_map(
+                fn (array $ingredientData) => new IngredientParams(
+                    $ingredientData['name'],
+                ),
+                $ingredientsData
+            )
+        );
 
         return new RecipeParams(
             $this->getParameter(self::FIELD_TITLE),
@@ -34,33 +38,37 @@ class Recipe extends Request implements RecipeRequestInteface
 
     protected function rules(): Collection
     {
-        return new Collection([
-            self::FIELD_TITLE => [
-                new NameRequirements(),
-            ],
-            self::FIELD_IMAGE_URL => [
-                new Url(),
-            ],
-            self::FIELD_DESCRIPTION => [
-                new Type('string'),
-                new Length(
-                    min: 10,
-                    max: 1000,
-                    minMessage: 'Your username must be at least {{ limit }} characters long',
-                    maxMessage: 'Your username cannot be longer than {{ limit }} characters',
-                ),
-            ],
-            self::FIELD_INGREDIENTS => [
-                new Collection([
-                    'name' => [
-                        new NameRequirements(),
-                    ],
-                ])
-            ],
-        ]);
+        return new Collection(
+            [
+             self::FIELD_TITLE       => [
+                                            new NameRequirements(),
+                                           ],
+             self::FIELD_IMAGE_URL   => [
+                                            new Url(),
+                                           ],
+             self::FIELD_DESCRIPTION => [
+                                            new Type('string'),
+                                            new Length(
+                                             min: 10,
+                                             max: 1000,
+                                             minMessage: 'Your username must be at least {{ limit }} characters long',
+                                             maxMessage: 'Your username cannot be longer than {{ limit }} characters',
+                                         ),
+                                           ],
+             self::FIELD_INGREDIENTS => [
+                    new Collection(
+                     [
+                         'name' => [
+                                 new NameRequirements(),
+                                ],
+                        ]
+                 )
+                                           ],
+            ]
+        );
     }
 
-    protected function  getTableName(): string
+    protected function getTableName(): string
     {
         return 'recipes';
     }

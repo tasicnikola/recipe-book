@@ -25,14 +25,14 @@ class RecipeDTO implements JsonSerializable
     public function jsonSerialize(): array
     {
         return  [
-            'id' => $this->id,
-            'title' => $this->title,
-            'image' => $this->imageUrl,
-            'description' => $this->description,
-            'user' => $this->user,
-            'ingredients' => $this->ingredients,
-            'created_at' => $this->createdAt,
-            'updated_at' => $this->updatedAt
-        ];
+                 'id'          => $this->id,
+                 'title'       => $this->title,
+                 'image'       => $this->imageUrl,
+                 'description' => $this->description,
+                 'user'        => $this->user,
+                 'ingredients' => $this->ingredients,
+                 'created_at'  => $this->createdAt,
+                 'updated_at'  => $this->updatedAt,
+                ];
     }
 }

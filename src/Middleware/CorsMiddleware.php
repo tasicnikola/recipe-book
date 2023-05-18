@@ -23,22 +23,21 @@ class CorsMiddleware implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::RESPONSE => [
-                ['corsHeaders'],
-            ]
-        ];
+                KernelEvents::RESPONSE => [
+                                       ['corsHeaders'],
+                                      ],
+               ];
     }
 
     private function getCorsHeaders(array $params): array
     {
         return [
-            'Access-Control-Allow-Origin' => $params['origin'],
-            'Content-Type' => 'application/json',
-            'Access-Control-Allow-Credentials' => true,
-            'Access-Control-Max-Age' => 0,
-            'Access-Control-Allow-Methods' => 'GET, PUT, POST, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers' =>
-                'Origin, X-Requested-With, Content-Type, Cache-Control, ApiKey, Pragma, AccessToken',
-        ];
+                'Access-Control-Allow-Origin'      => $params['origin'],
+                'Content-Type'                     => 'application/json',
+                'Access-Control-Allow-Credentials' => true,
+                'Access-Control-Max-Age'           => 0,
+                'Access-Control-Allow-Methods'     => 'GET, PUT, POST, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers'     => 'Origin, X-Requested-With, Content-Type, Cache-Control, ApiKey, Pragma, AccessToken',
+               ];
     }
 }

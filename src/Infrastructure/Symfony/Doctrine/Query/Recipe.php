@@ -43,15 +43,15 @@ class Recipe implements RecipeInterface
             ->fetchAllAssociative();
 
         $recipesWithIngredients = [];
-        foreach ($recipesData  as $recipeData) {
+        foreach ($recipesData as $recipeData) {
             $recipeId = $recipeData['recipe_id'];
             if (!isset($recipesWithIngredients[$recipeId])) {
                 $recipesWithIngredients[$recipeId] = [
-                    'data' => $recipeData,
-                    'ingredients' => []
-                ];
+                                                      'data'        => $recipeData,
+                                                      'ingredients' => [],
+                                                     ];
             }
-            $recipesWithIngredients[$recipeId]['ingredients'][] =  $this->ingredientQuery->createDTO($recipeData);
+            $recipesWithIngredients[$recipeId]['ingredients'][] = $this->ingredientQuery->createDTO($recipeData);
         }
 
         $recipeDTOs = [];

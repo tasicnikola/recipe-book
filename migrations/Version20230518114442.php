@@ -7,9 +7,6 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20230518114442 extends AbstractMigration
 {
     public function getDescription(): string
@@ -19,7 +16,6 @@ final class Version20230518114442 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // Create ingredients table
         $this->addSql('CREATE TABLE ingredients (
             id INT AUTO_INCREMENT NOT NULL,
             name VARCHAR(50) NOT NULL,
@@ -28,7 +24,6 @@ final class Version20230518114442 extends AbstractMigration
             PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 
-        // Create recipes table
         $this->addSql('CREATE TABLE recipes (
             id INT AUTO_INCREMENT NOT NULL,
             user INT DEFAULT NULL,
@@ -41,7 +36,6 @@ final class Version20230518114442 extends AbstractMigration
             PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 
-        // Create recipe_ingredient join table
         $this->addSql('CREATE TABLE recipe_ingredient (
             recipe_id INT NOT NULL,
             ingredient_id INT NOT NULL,
@@ -52,7 +46,6 @@ final class Version20230518114442 extends AbstractMigration
             FOREIGN KEY (ingredient_id) REFERENCES ingredients (id) ON DELETE CASCADE
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 
-        // Create users table
         $this->addSql('CREATE TABLE users (
             id INT AUTO_INCREMENT NOT NULL,
             username VARCHAR(50) NOT NULL,
@@ -65,16 +58,12 @@ final class Version20230518114442 extends AbstractMigration
             PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 
-        // Add foreign key constraint to recipes table
         $this->addSql('ALTER TABLE recipes ADD CONSTRAINT FK_A369E2B58D93D649 FOREIGN KEY (user) REFERENCES users (id)');
     }
 
     public function down(Schema $schema): void
     {
-        // Drop foreign key constraint from recipes table
         $this->addSql('ALTER TABLE recipes DROP FOREIGN KEY FK_A369E2B58D93D649');
-
-        // Drop tables in reverse order
         $this->addSql('DROP TABLE recipe_ingredient');
         $this->addSql('DROP TABLE recipes');
         $this->addSql('DROP TABLE ingredients');

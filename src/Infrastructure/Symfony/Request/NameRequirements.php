@@ -13,13 +13,13 @@ class NameRequirements extends Compound
     protected function getConstraints(array $options): array
     {
         return [
-                new Type('string'),
-                new Length(
-                min: 2,
-                max: 64,
-                minMessage: 'Your name must be at least {{ limit }} characters long',
-                maxMessage: 'Your name cannot be longer than {{ limit }} characters',
-            ),
-               ];
+            new Type('string'),
+            new Length(
+                    min: 2,
+                    max: 64,
+                    minMessage: 'Your name must be at least {{ limit }} characters long',
+                    maxMessage: 'Your name cannot be longer than {{ limit }} characters',
+                ),
+        ];
     }
 }

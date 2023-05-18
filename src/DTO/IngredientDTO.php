@@ -19,10 +19,10 @@ class IngredientDTO implements JsonSerializable
     public function jsonSerialize(): mixed
     {
         return [
-            'id'         => $this->id,
-            'name'       => $this->name,
-            'created_at' => $this->createdAt,
-            'updated_at' => $this->updatedAt,
-        ];
+                'id'         => $this->id,
+                'name'       => $this->name,
+                'created_at' => $this->createdAt,
+                'updated_at' => $this->updatedAt,
+               ];
     }
 }

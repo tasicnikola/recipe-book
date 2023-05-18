@@ -15,8 +15,8 @@ class ValidationError implements JsonSerializable
     public function jsonSerialize(): mixed
     {
         return [
-                'property' => $this->property,
-                'message'  => $this->message,
-               ];
+            'property' => $this->property,
+            'message'  => $this->message,
+        ];
     }
 }
