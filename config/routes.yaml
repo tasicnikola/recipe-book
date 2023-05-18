@@ -11,27 +11,27 @@ controllers:
 
 getRecipes:
     path: /recipes/
-    controller: App\Controller\RecepieController::get
+    controller: App\Controller\RecipeController::get
     methods: GET
 
 getRecipesByID:
     path: /recipes/{id}
-    controller: App\Controller\RecepieController::getByID
+    controller: App\Controller\RecipeController::getByID
     methods: GET
 
 postRecipe:
     path: /recipes
-    controller: App\Controller\RecepieController::create
+    controller: App\Controller\RecipeController::create
     methods: POST
 
 updateRecipe:
     path: /recipes/{id}
-    controller: App\Controller\RecepieController::update
+    controller: App\Controller\RecipeController::update
     methods: PUT
     
 deleteRecipes:
     path: /recipes/{id}
-    controller: App\Controller\RecepieController::delete
+    controller: App\Controller\RecipeController::delete
     methods: DELETE
 
 getUsers:

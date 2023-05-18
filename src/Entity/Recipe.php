@@ -2,16 +2,19 @@
 
 namespace App\Entity;
 
+use App\DTO\RequestParams\RecipeParams;
 use App\Entity\Trait\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\RecipeRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
-#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'recipes')]
-class Recipe
+#[ORM\HasLifecycleCallbacks]
+class Recipe implements JsonSerializable, BaseEntityInterface
 {
     use TimestampableTrait;
 
@@ -33,12 +36,13 @@ class Recipe
     #[ORM\JoinColumn(name: 'user', referencedColumnName: 'id')]
     private User $user;
 
-    #[ORM\OneToMany(targetEntity: "App\Entity\RecipeIngredient", mappedBy: "recipe", fetch:"EXTRA_LAZY", orphanRemoval: true)]
-    private $recipeIngredient;
+    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'recipe', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\JoinTable(name: 'recipe_ingredient')]
+    private Collection $ingredients;
 
     public function __construct()
     {
-        $this->recipeIngredient = new ArrayCollection();
+        $this->ingredients = new ArrayCollection([]);
     }
 
     public function getId(): int
@@ -92,5 +96,58 @@ class Recipe
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function setIngredients(ArrayCollection $ingredients): self
+    {
+        $this->ingredients  = $ingredients;
+
+        return $this;
+    }
+
+    public function addIngredient(Ingredient $ingredient): void
+    {
+        $this->ingredients->add($ingredient);
+    }
+
+    public function removeIngredient(Ingredient $ingredient): void
+    {
+        $this->ingredients->removeElement($ingredient);
+    }
+
+    public function syncIngredients(array $ingredients): void
+    {
+        foreach ($this->ingredients->toArray() as $ingredient) {
+            if (!in_array($ingredient->getName(), $ingredients)) {
+                $this->removeIngredient($ingredient);
+            }
+        }
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'image_url' => $this->imageUrl,
+            'description' => $this->description,
+            'user' => $this->user,
+            'ingredients' => $this->ingredients,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
+        ];
+    }
+
+    public function update(RecipeParams $params, User $user): void
+    {
+        $this->title = $params->title;
+        $this->imageUrl = $params->image;
+        $this->description = $params->description;
+        $this->user = $user;
     }
 }

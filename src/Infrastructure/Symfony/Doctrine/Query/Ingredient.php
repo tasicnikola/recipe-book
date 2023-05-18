@@ -51,11 +51,10 @@ class Ingredient implements IngredientInterface
         if (false === $ingredientData) {
             return null;
         }
-
         return $this->createDTO($ingredientData);
     }
 
-    private function createDTO(array $ingredientData): IngredientDTO
+    public function createDTO(array $ingredientData): IngredientDTO
     {
         return new IngredientDTO(
             $ingredientData['id'],

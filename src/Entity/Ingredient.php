@@ -41,7 +41,7 @@ class Ingredient implements JsonSerializable, BaseEntityInterface
         return $this;
     }
 
-    public function update(IngredientParams $params)
+    public function update(IngredientParams $params, Recipe $recipe): void
     {
         $this->name = $params->name;
     }

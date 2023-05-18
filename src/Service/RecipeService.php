@@ -6,24 +6,25 @@ use App\DTO\Collection\Recipes;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Recipe;
 use App\DTO\RecipeDTO;
-use App\DTO\RequestParams\Parameters;
+use App\DTO\RequestParams\IngredientParams;
 use App\DTO\RequestParams\RecipeParams;
-use App\Entity\User;
 use App\Entity\Ingredient;
-use App\Entity\RecipeIngredient;
 use App\Repository\RecipeRepository;
-use App\Repository\RecipeIngredientRepository;
-use Exception;
 use App\Query\RecipeInterface;
 use App\Exception\NotFound\RecipeNotFoundException;
+use App\Exception\NotFound\UserNotFoundException;
+use App\Repository\IngredientRepository;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class RecipeService
 {
     public function __construct(
         private readonly ManagerRegistry $doctrine,
-        private readonly RecipeRepository $recipeRepository,
+        private readonly RecipeRepository $repository,
         private readonly RecipeInterface $query,
-        private readonly RecipeIngredientRepository $recipeIngredientRepository
+        private readonly UserRepository $userRepository,
+        private readonly IngredientRepository $ingredientRepository,
     ) {
     }
 
@@ -34,69 +35,76 @@ class RecipeService
 
     public function getByID(int $id): ?RecipeDTO
     {
-        return $this->query->getByID($id);
-    }
-
-    public function create(RecipeParams $recipeParams): int
-    {
-        $recipe = (new Recipe())
-            ->setTitle($recipeParams->title)
-            ->setImageUrl($recipeParams->image)
-            ->setDescription($recipeParams->description)
-            ->setUser($this->findUser($recipeParams->user));
-
-        $recipeId = $this->recipeRepository->save($recipe);
-        $this->setRecipeIngredients($recipeParams->ingredients, $recipe);
-
-        return $recipeId;
-    }
-
-    public function delete(int $id): void
-    {
-        $recipe = $this->findRecipe($id);
-
-        $this->recipeRepository->remove($recipe);
-    }
-
-    private function findRecipe(int $id): Recipe
-    {
-        $recipe = $this->recipeRepository->find($id);
+        $recipe =  $this->query->getByID($id);
 
         if (null === $recipe) {
-            throw new RecipeNotFoundException($id);
+            throw new  RecipeNotFoundException($id);
         }
 
         return $recipe;
     }
 
-    public function update(int $id, Parameters $recipeParams): void
+    public function create(RecipeParams $params): int
     {
-        $recipe = ($this->recipeRepository->find($id))
-            ->setTitle($recipeParams->title)
-            ->setImageUrl($recipeParams->image)
-            ->setDescription($recipeParams->description)
-            ->setUser($this->findUser($recipeParams->user));
+        $recipe = $this->repository->getEntityInstance();
+        $user = $this->userRepository->find($params->user);
 
-        $this->recipeIngredientRepository->delete($id);
-        $this->setRecipeIngredients($recipeParams->ingredients, $recipe);
-        $this->recipeRepository->update($recipe);
-    }
-
-    private function setRecipeIngredients(array $ingredients, Recipe $entity): void
-    {
-        foreach ($ingredients as $ingredient) {
-            $ingredientId = $this->doctrine->getRepository(Ingredient::class)->find($ingredient['ingredient']);
-            $recipeIngredient = (new RecipeIngredient())
-                ->setAmount($ingredient['amount'])
-                ->setRecipe($entity)
-                ->setIngredient($ingredientId);
-
-            $this->recipeIngredientRepository->save($recipeIngredient);
+        if (null === $user) {
+            throw new UserNotFoundException($params->user);
         }
+        $ingredients = new ArrayCollection();
+
+        foreach ($params->ingredients->params as $ingredientParams) {
+            $ingredient =  $this->ingredientRepository->getEntityInstance();
+            $ingredient->update($ingredientParams, $recipe);
+            $ingredients->add($ingredient);
+        }
+
+        $recipe->setIngredients($ingredients);
+        $recipe->update($params, $user);
+        $this->repository->save($recipe);
+
+        return $recipe->getId();
     }
 
-    private function findUser(int $id): User
+    public function delete(int $id): void
     {
-        return $this->doctrine->getRepository(User::class)->find($id);
+        $recipe =  $this->getRecipeEntity($id);
+
+        $this->repository->remove($recipe);
+    }
+
+
+    public function update(int $id, RecipeParams $params): void
+    {
+        $recipe = $this->getRecipeEntity($id);
+        $user = $this->userRepository->find($params->user);
+
+        foreach ($params->ingredients->params as $ingredientParams) {
+            $ingredient = $recipe->getIngredients()->findFirst(fn (int $index, Ingredient $ingredient) => $ingredient->getName() === $ingredientParams->name);
+
+            if (!$ingredient) {
+                $ingredient = $this->ingredientRepository->getEntityInstance();
+                $recipe->addIngredient($ingredient);
+            }
+
+            $ingredient->update($ingredientParams, $recipe);
+        }
+
+        $recipe->update($params, $user);
+        $recipe->syncIngredients(array_map(fn (IngredientParams $ingredientParams) => $ingredientParams->name, $params->ingredients->params));
+
+        $this->repository->save($recipe);
+    }
+
+    private function getRecipeEntity(int $id): Recipe
+    {
+        $recipe = $this->repository->find($id);
+
+        if (null  === $recipe) {
+            throw new RecipeNotFoundException($id);
+        }
+
+        return $recipe;
     }
 }
