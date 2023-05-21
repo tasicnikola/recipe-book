@@ -33,12 +33,12 @@ class RecipeService
         return $this->query->getAll();
     }
 
-    public function getByID(int $id): ?RecipeDTO
+    public function getByGuid(string $guid): ?RecipeDTO
     {
-        $recipe = $this->query->getByID($id);
+        $recipe = $this->query->getByGuid($guid);
 
         if (null === $recipe) {
-            throw new  RecipeNotFoundException($id);
+            throw new  RecipeNotFoundException($guid);
         }
 
         return $recipe;
@@ -64,19 +64,19 @@ class RecipeService
         $recipe->update($params, $user);
         $this->repository->save($recipe);
 
-        return $recipe->getId();
+        return $recipe->getGuid();
     }
 
-    public function delete(int $id): void
+    public function delete(string $guid): void
     {
-        $recipe = $this->getRecipeEntity($id);
+        $recipe = $this->getRecipeEntity($guid);
 
         $this->repository->remove($recipe);
     }
 
-    public function update(int $id, RecipeParams $params): void
+    public function update(string $guid, RecipeParams $params): void
     {
-        $recipe = $this->getRecipeEntity($id);
+        $recipe = $this->getRecipeEntity($guid);
         $user = $this->userRepository->find($params->user);
 
         foreach ($params->ingredients->params as $ingredientParams) {
@@ -96,12 +96,12 @@ class RecipeService
         $this->repository->save($recipe);
     }
 
-    private function getRecipeEntity(int $id): Recipe
+    private function getRecipeEntity(string $guid): Recipe
     {
-        $recipe = $this->repository->find($id);
+        $recipe = $this->repository->find($guid);
 
         if (null === $recipe) {
-            throw new RecipeNotFoundException($id);
+            throw new RecipeNotFoundException($guid);
         }
 
         return $recipe;

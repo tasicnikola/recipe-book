@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\DTO\RequestParams\UserParams;
 use App\Entity\Trait\TimestampableTrait;
+use App\Entity\Trait\HasGuidTrait;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
@@ -14,31 +15,22 @@ use JsonSerializable;
 class User implements JsonSerializable, BaseEntityInterface
 {
     use TimestampableTrait;
+    use HasGuidTrait;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private int $id;
-
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64, unique: true)]
     private string $username;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private string $password;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
+    #[ORM\Column(length: 64, nullable: true)]
     private ?string $surname = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $email = null;
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
+    #[ORM\Column(length: 64, unique: true)]
+    private string $email;
 
     public function getUsername(): string
     {
@@ -52,7 +44,7 @@ class User implements JsonSerializable, BaseEntityInterface
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -88,7 +80,7 @@ class User implements JsonSerializable, BaseEntityInterface
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -112,14 +104,14 @@ class User implements JsonSerializable, BaseEntityInterface
     public function jsonSerialize(): mixed
     {
         return [
-                'guid'       => $this->id,
-                'name'       => $this->name,
-                'lastName'   => $this->surname,
-                'email'      => $this->email,
-                'role'       => $this->username,
-                'team'       => $this->password,
-                'created_at' => $this->createdAt,
-                'updated_at' => $this->updatedAt,
-               ];
+            'guid'       => $this->guid,
+            'name'       => $this->name,
+            'lastName'   => $this->surname,
+            'email'      => $this->email,
+            'role'       => $this->username,
+            'team'       => $this->password,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
+        ];
     }
 }

@@ -26,31 +26,31 @@ class Recipe implements RecipeInterface
         $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder
             ->select(
-                'r.id as recipe_id',
+                'r.guid as recipe_guid',
                 'r.title as recipe_title',
                 'r.image_url as recipe_image_url',
                 'r.description as recipe_description',
                 'r.user as recipe_user',
                 'r.created_at as recipe_created_at',
                 'r.updated_at as recipe_updated_at',
-                'i.id as ingredient_id',
+                'i.guid as ingredient_guid',
                 'i.name as ingredient_name',
                 'i.created_at as ingredient_created_at',
                 'i.updated_at as ingredient_updated_at'
             )
             ->from('recipes', 'r')
-            ->innerJoin('r', 'recipe_ingredient', 'ri', 'r.id = ri.recipe_id')
-            ->innerJoin('ri', 'ingredients', 'i', 'i.id = ri.ingredient_id');
+            ->innerJoin('r', 'recipe_ingredient', 'ri', 'r.guid = ri.recipe_guid')
+            ->innerJoin('ri', 'ingredients', 'i', 'i.guid = ri.ingredient_guid');
 
         $recipesData = $queryBuilder->fetchAllAssociative();
 
         $recipesWithIngredients = [];
         foreach ($recipesData as $recipeData) {
-            $recipeId = $recipeData['recipe_id'];
+            $recipeId = $recipeData['recipe_guid'];
             if (!isset($recipesWithIngredients[$recipeId])) {
                 $recipesWithIngredients[$recipeId] = [
                     'data' => [
-                        'id' => $recipeData['recipe_id'],
+                        'guid' => $recipeData['recipe_guid'],
                         'title' => $recipeData['recipe_title'],
                         'image_url' => $recipeData['recipe_image_url'],
                         'description' => $recipeData['recipe_description'],
@@ -62,7 +62,7 @@ class Recipe implements RecipeInterface
                 ];
             }
             $ingredient = [
-                'id' => $recipeData['ingredient_id'],
+                'guid' => $recipeData['ingredient_guid'],
                 'name' => $recipeData['ingredient_name'],
                 'created_at' => $recipeData['ingredient_created_at'],
                 'updated_at' => $recipeData['ingredient_updated_at'],
@@ -78,28 +78,28 @@ class Recipe implements RecipeInterface
         return new Recipes($recipeDTOs);
     }
 
-    public function getById(int $id): ?RecipeDTO
+    public function getByGuid(string $guid): ?RecipeDTO
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder
             ->select(
-                'r.id as recipe_id',
+                'r.guid as recipe_guid',
                 'r.title as recipe_title',
                 'r.image_url as recipe_image_url',
                 'r.description as recipe_description',
                 'r.user as recipe_user',
                 'r.created_at as recipe_created_at',
                 'r.updated_at as recipe_updated_at',
-                'i.id as ingredient_id',
+                'i.guid as ingredient_guid',
                 'i.name as ingredient_name',
                 'i.created_at as ingredient_created_at',
                 'i.updated_at as ingredient_updated_at'
             )
             ->from('recipes', 'r')
-            ->innerJoin('r', 'recipe_ingredient', 'ri', 'r.id = ri.recipe_id')
-            ->innerJoin('ri', 'ingredients', 'i', 'i.id = ri.ingredient_id')
-            ->where('r.id = :recipeId')
-            ->setParameter('recipeId', $id);
+            ->innerJoin('r', 'recipe_ingredient', 'ri', 'r.guid = ri.recipe_guid')
+            ->innerJoin('ri', 'ingredients', 'i', 'i.guid = ri.ingredient_guid')
+            ->where('r.guid = :recipeId')
+            ->setParameter('recipeId', $guid);
 
         $recipeData = $queryBuilder->fetchAllAssociative();
 
@@ -112,14 +112,14 @@ class Recipe implements RecipeInterface
 
         foreach ($recipeData as $row) {
             $ingredient = [
-                'id' => $row['ingredient_id'],
+                'guid' => $row['ingredient_guid'],
                 'name' => $row['ingredient_name'],
                 'created_at' => $row['ingredient_created_at'],
                 'updated_at' => $row['ingredient_updated_at'],
             ];
             $ingredientsArray[] = $this->ingredientQuery->createDTO($ingredient);
 
-            $recipe['id'] = $row['recipe_id'];
+            $recipe['guid'] = $row['recipe_guid'];
             $recipe['title'] = $row['recipe_title'];
             $recipe['image_url'] = $row['recipe_image_url'];
             $recipe['description'] = $row['recipe_description'];
@@ -135,11 +135,11 @@ class Recipe implements RecipeInterface
     private function createDTO(array $recipeData, Ingredients $ingredients): RecipeDTO
     {
         return new RecipeDTO(
-            $recipeData['id'],
+            $recipeData['guid'],
             $recipeData['title'],
             $recipeData['image_url'],
             $recipeData['description'],
-            $this->userQuery->getById($recipeData['user']),
+            $this->userQuery->getByGuid($recipeData['user']),
             $ingredients,
             new DateTimeImmutable($recipeData['created_at']),
             $recipeData['updated_at'] ? new DateTime($recipeData['updated_at']) : null,

@@ -6,8 +6,8 @@ namespace App\Exception\NotFound;
 
 class IngredientNotFoundException extends NotFoundException
 {
-    public function __construct(readonly int $ingredientId)
+    public function __construct(readonly string $ingredientGuid)
     {
-        parent::__construct($ingredientId, 'ingredient');
+        parent::__construct($ingredientGuid, 'ingredient');
     }
 }

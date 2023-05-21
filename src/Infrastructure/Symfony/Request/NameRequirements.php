@@ -15,11 +15,11 @@ class NameRequirements extends Compound
         return [
             new Type('string'),
             new Length(
-                    min: 2,
-                    max: 64,
-                    minMessage: 'Your name must be at least {{ limit }} characters long',
-                    maxMessage: 'Your name cannot be longer than {{ limit }} characters',
-                ),
+                min: 4,
+                max: 64,
+                minMessage: 'Your name must be at least {{ limit }} characters long',
+                maxMessage: 'Your name cannot be longer than {{ limit }} characters',
+            ),
         ];
     }
 }

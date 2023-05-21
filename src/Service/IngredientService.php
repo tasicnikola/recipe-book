@@ -23,12 +23,12 @@ class IngredientService
         return $this->query->getAll();
     }
 
-    public function getByID(int $id): ?IngredientDTO
+    public function getByID(string $guid): ?IngredientDTO
     {
-        $ingredient = $this->query->getByID($id);
+        $ingredient = $this->query->getByGuid($guid);
 
         if (null === $ingredient) {
-            throw new IngredientNotFoundException($id);
+            throw new IngredientNotFoundException($guid);
         }
 
         return $ingredient;
@@ -40,28 +40,28 @@ class IngredientService
         $ingredient->update($params);
         $this->repository->save($ingredient);
 
-        return $ingredient->getId();
+        return $ingredient->getGuid();
     }
 
-    public function delete(int $id): void
+    public function delete(string $guid): void
     {
-        $ingredient = $this->findIngredient($id);
+        $ingredient = $this->findIngredient($guid);
         $this->repository->remove($ingredient);
     }
 
-    public function update(int $id, IngredientParams $params): void
+    public function update(string $guid, IngredientParams $params): void
     {
-        $ingredient = $this->findIngredient($id);
+        $ingredient = $this->findIngredient($guid);
         $ingredient->update($params);
         $this->repository->save($ingredient);
     }
 
-    private function findIngredient(int $id): Ingredient
+    private function findIngredient(string $guid): Ingredient
     {
-        $ingredient = $this->repository->find($id);
+        $ingredient = $this->repository->find($guid);
 
         if (null === $ingredient) {
-            throw new IngredientNotFoundException($id);
+            throw new IngredientNotFoundException($guid);
         }
 
         return $ingredient;

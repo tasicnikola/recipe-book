@@ -11,7 +11,7 @@ use JsonSerializable;
 class RecipeDTO implements JsonSerializable
 {
     public function __construct(
-        public int $id,
+        public string $guid,
         public string $title,
         public string $imageUrl,
         public string $description,
@@ -25,14 +25,14 @@ class RecipeDTO implements JsonSerializable
     public function jsonSerialize(): array
     {
         return  [
-                 'id'          => $this->id,
-                 'title'       => $this->title,
-                 'image'       => $this->imageUrl,
-                 'description' => $this->description,
-                 'user'        => $this->user,
-                 'ingredients' => $this->ingredients,
-                 'created_at'  => $this->createdAt,
-                 'updated_at'  => $this->updatedAt,
-                ];
+            'guid'        => $this->guid,
+            'title'       => $this->title,
+            'image'       => $this->imageUrl,
+            'description' => $this->description,
+            'user'        => $this->user,
+            'ingredients' => $this->ingredients,
+            'created_at'  => $this->createdAt,
+            'updated_at'  => $this->updatedAt,
+        ];
     }
 }

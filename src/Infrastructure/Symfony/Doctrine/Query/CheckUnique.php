@@ -13,7 +13,7 @@ class CheckUnique implements CheckUniqueInterface
     {
     }
 
-    public function checkUnique(array $uniqueParams, string $table, ?int $id): array
+    public function checkUnique(array $uniqueParams, string $table, ?string $guid): array
     {
         if (empty($uniqueParams)) {
             return [];
@@ -23,10 +23,10 @@ class CheckUnique implements CheckUniqueInterface
             ->select($uniqueParams)
             ->from($table);
 
-        if (null !== $id) {
+        if (null !== $guid) {
             $queryBuilder
-                ->where('id != :id')
-                ->setParameter('id', $id);
+                ->where('guid != :guid')
+                ->setParameter('guid', $guid);
         }
         $data = $queryBuilder->fetchAllAssociative();
 

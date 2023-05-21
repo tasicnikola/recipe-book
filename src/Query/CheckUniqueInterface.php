@@ -6,5 +6,5 @@ namespace App\Query;
 
 interface CheckUniqueInterface
 {
-    public function checkUnique(array $uniqueParams, string $table, int|null $id): array;
+    public function checkUnique(array $uniqueParams, string $table, string|null $guid): array;
 }

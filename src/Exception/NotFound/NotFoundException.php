@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class NotFoundException extends Exception
 {
-    public function __construct(readonly int | string $id, readonly string $entityName)
+    public function __construct(readonly string $guid, readonly string $entityName)
     {
-        parent::__construct("There is no {$entityName} with id: {$id}", JsonResponse::HTTP_NOT_FOUND);
+        parent::__construct("There is no {$entityName} with guid: {$guid}", JsonResponse::HTTP_NOT_FOUND);
     }
 }

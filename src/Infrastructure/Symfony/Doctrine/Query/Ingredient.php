@@ -22,7 +22,7 @@ class Ingredient implements IngredientInterface
     {
         $ingredientsData = $this->connection->createQueryBuilder('ingredients')
             ->select(
-                'id',
+                'guid',
                 'name',
                 'created_at',
                 'updated_at'
@@ -34,18 +34,18 @@ class Ingredient implements IngredientInterface
         return new Ingredients(array_map(fn (array $ingredientData) => $this->createDTO($ingredientData), $ingredientsData));
     }
 
-    public function getById(int $id): ?IngredientDTO
+    public function getByGuid(string $guid): ?IngredientDTO
     {
         $ingredientData = $this->connection->createQueryBuilder()
             ->select(
-                'id',
+                'guid',
                 'name',
                 'created_at',
                 'updated_at'
             )
             ->from('ingredients')
-            ->where('id = ?')
-            ->setParameter(0, $id)
+            ->where('guid = ?')
+            ->setParameter(0, $guid)
             ->fetchAssociative();
 
         if (false === $ingredientData) {
@@ -57,7 +57,7 @@ class Ingredient implements IngredientInterface
     public function createDTO(array $ingredientData): IngredientDTO
     {
         return new IngredientDTO(
-            $ingredientData['id'],
+            $ingredientData['guid'],
             $ingredientData['name'],
             new DateTimeImmutable($ingredientData['created_at']),
             $ingredientData['updated_at'] ? new DateTime($ingredientData['updated_at']) : null,

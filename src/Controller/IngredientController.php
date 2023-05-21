@@ -5,10 +5,8 @@ namespace App\Controller;
 use App\Controller\Trait\JsonResponseTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use App\Service\IngredientService;
 use Exception;
-use App\DTO\IngredientParams;
 use App\Request\Ingredient\Ingredient as IngredientRequest;
 
 class IngredientController extends AbstractController
@@ -28,10 +26,10 @@ class IngredientController extends AbstractController
         }
     }
 
-    public function getByID(int $id): JsonResponse
+    public function getByID(string $guid): JsonResponse
     {
         try {
-            return $this->jsonResponse($this->service->getByID($id));
+            return $this->jsonResponse($this->service->getByID($guid));
         } catch (Exception $e) {
             return  $this->exceptionJsonResponse($e);
         }
@@ -48,10 +46,10 @@ class IngredientController extends AbstractController
         }
     }
 
-    public function update(int $id, IngredientRequest $request): JsonResponse
+    public function update(string $guid, IngredientRequest $request): JsonResponse
     {
         try {
-            $this->service->update($id, $request->params());
+            $this->service->update($guid, $request->params());
 
             return $this->jsonResponseNoContent();
         } catch (Exception $e) {
@@ -59,10 +57,10 @@ class IngredientController extends AbstractController
         }
     }
 
-    public function delete(int $id): JsonResponse
+    public function delete(string $guid): JsonResponse
     {
         try {
-            $this->service->delete($id);
+            $this->service->delete($guid);
 
             return $this->jsonResponseNoContent();
         } catch (Exception $e) {

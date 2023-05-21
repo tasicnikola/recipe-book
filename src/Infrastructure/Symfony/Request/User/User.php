@@ -48,8 +48,8 @@ class User extends Request implements UserRequestInterface
                 self::FIELD_EMAIL    => [
                     new Type('string'),
                     new Length(
-                        min: 15,
-                        max: 50,
+                        min: 16,
+                        max: 64,
                         minMessage: 'Your email must be at least {{ limit }} characters long',
                         maxMessage: 'Your email cannot be longer than {{ limit }} characters',
                     ),
@@ -58,8 +58,8 @@ class User extends Request implements UserRequestInterface
                 self::FIELD_USERNAME => [
                     new Type('string'),
                     new Length(
-                        min: 5,
-                        max: 25,
+                        min: 4,
+                        max: 32,
                         minMessage: 'Your username must be at least {{ limit }} characters long',
                         maxMessage: 'Your username cannot be longer than {{ limit }} characters',
                     ),

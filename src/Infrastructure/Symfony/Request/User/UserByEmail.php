@@ -30,8 +30,8 @@ class UserByEmail extends Request implements UserRequestInterface
             self::FIELD_EMAIL => [
                 new Type('string'),
                 new Length(
-                    min: 10,
-                    max: 50,
+                    min: 8,
+                    max: 64,
                     minMessage: 'Your email must be at least {{ limit }} characters long',
                     maxMessage: 'Your email cannot be longer than {{ limit }} characters',
                 ),

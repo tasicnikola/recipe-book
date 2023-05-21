@@ -35,8 +35,8 @@ trait JsonResponseTrait
             [
                 'error' => [
                     'code' => $code,
-                         'message' => $e->getMessage(),
-                        ],
+                    'message' => $e->getMessage(),
+                ],
             ],
             $code
         );

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\DTO\RequestParams\IngredientParams;
 use App\Entity\Trait\TimestampableTrait;
+use App\Entity\Trait\HasGuidTrait;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
@@ -15,19 +16,10 @@ use JsonSerializable;
 class Ingredient implements JsonSerializable, BaseEntityInterface
 {
     use TimestampableTrait;
+    use HasGuidTrait;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private int $id;
-
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64, unique: true)]
     private string $name;
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
 
     public function getName(): string
     {
@@ -41,7 +33,7 @@ class Ingredient implements JsonSerializable, BaseEntityInterface
         return $this;
     }
 
-    public function update(IngredientParams $params, Recipe $recipe): void
+    public function update(IngredientParams $params): void
     {
         $this->name = $params->name;
     }
@@ -49,10 +41,10 @@ class Ingredient implements JsonSerializable, BaseEntityInterface
     public function jsonSerialize(): mixed
     {
         return [
-                'id'         => $this->id,
-                'name'       => $this->name,
-                'created_at' => $this->createdAt,
-                'updated_at' => $this->updatedAt,
-               ];
+            'guid'       => $this->guid,
+            'name'       => $this->name,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
+        ];
     }
 }

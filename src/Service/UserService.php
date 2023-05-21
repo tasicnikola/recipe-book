@@ -26,46 +26,46 @@ class UserService
         return $this->userQuery->getAll();
     }
 
-    public function getByID(int $id): ?UserDTO
+    public function getByGuid(string $guid): ?UserDTO
     {
-        $user = $this->userQuery->getById($id);
+        $user = $this->userQuery->getByGuid($guid);
 
         if (null === $user) {
-            throw new UserNotFoundException($id);
+            throw new UserNotFoundException($guid);
         }
 
         return $user;
     }
 
-    public function create(UserParams $params): int
+    public function create(UserParams $params): string
     {
         $user = $this->repository->getEntityInstance();
         $user->update($params);
         $this->repository->save($user);
 
-        return $user->getId();
+        return $user->getGuid();
     }
 
-    public function delete(int $id): void
+    public function delete(string $guid): void
     {
-        $user = $this->findUser($id);
+        $user = $this->findUser($guid);
         $this->repository->remove($user);
     }
 
-    private function findUser(int $id): User
+    private function findUser(string $guid): User
     {
-        $user = $this->repository->find($id);
+        $user = $this->repository->find($guid);
 
         if (null === $user) {
-            throw new UserNotFoundException($id);
+            throw new UserNotFoundException($guid);
         }
 
         return $user;
     }
 
-    public function update(int $id, UserParams $params): void
+    public function update(string $guid, UserParams $params): void
     {
-        $user = $this->findUser($id);
+        $user = $this->findUser($guid);
         $user->update($params);
         $this->repository->save($user);
     }

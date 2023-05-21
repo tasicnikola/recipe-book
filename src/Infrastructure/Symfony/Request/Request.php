@@ -110,8 +110,8 @@ abstract class Request
     {
         $unique = $this->getUnique();
         $tableName = $this->getTableName();
-        $id = (self::PUT === $method) ? $this->httpRequest->attributes->get('id') : null;
-        $queryData = $this->uniqueQuery->checkUnique($unique, $tableName, $id);
+        $guid = (self::PUT === $method) ? $this->httpRequest->attributes->get('guid') : null;
+        $queryData = $this->uniqueQuery->checkUnique($unique, $tableName, $guid);
         $this->check($queryData, $unique, $tableName);
     }
 

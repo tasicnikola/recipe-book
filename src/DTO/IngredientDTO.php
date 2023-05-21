@@ -9,7 +9,7 @@ use JsonSerializable;
 class IngredientDTO implements JsonSerializable
 {
     public function __construct(
-        public int $id,
+        public string $guid,
         public string $name,
         public DateTimeImmutable $createdAt,
         public ?DateTime $updatedAt,
@@ -19,7 +19,7 @@ class IngredientDTO implements JsonSerializable
     public function jsonSerialize(): mixed
     {
         return [
-                'id'         => $this->id,
+                'guid'         => $this->guid,
                 'name'       => $this->name,
                 'created_at' => $this->createdAt,
                 'updated_at' => $this->updatedAt,

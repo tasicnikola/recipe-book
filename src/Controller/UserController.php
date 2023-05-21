@@ -27,10 +27,10 @@ class UserController extends AbstractController
         }
     }
 
-    public function getByID(int $id): JsonResponse
+    public function getByID(string $guid): JsonResponse
     {
         try {
-            return $this->jsonResponse($this->service->getByID($id));
+            return $this->jsonResponse($this->service->getByGuid($guid));
         } catch (Exception $e) {
             return  $this->exceptionJsonResponse($e);
         }
@@ -39,18 +39,18 @@ class UserController extends AbstractController
     public function create(UserRequest $request): JsonResponse
     {
         try {
-            $id = $this->service->create($request->params());
+            $guid = $this->service->create($request->params());
 
-            return $this->jsonResponseCreated($id);
+            return $this->jsonResponseCreated($guid);
         } catch (Exception $e) {
             return  $this->exceptionJsonResponse($e);
         }
     }
 
-    public function update(int $id, UserRequest $request): JsonResponse
+    public function update(string $guid, UserRequest $request): JsonResponse
     {
         try {
-            $this->service->update($id, $request->params());
+            $this->service->update($guid, $request->params());
 
             return $this->jsonResponseNoContent();
         } catch (Exception $e) {
@@ -58,10 +58,10 @@ class UserController extends AbstractController
         }
     }
 
-    public function delete(int $id): JsonResponse
+    public function delete(string $guid): JsonResponse
     {
         try {
-            $this->service->delete($id);
+            $this->service->delete($guid);
 
             return $this->jsonResponseNoContent();
         } catch (Exception $e) {

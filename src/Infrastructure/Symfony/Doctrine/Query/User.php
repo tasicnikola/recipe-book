@@ -22,7 +22,7 @@ class User implements UserInterface
     {
         $usersData = $this->connection->createQueryBuilder('users')
             ->select(
-                'id',
+                'guid',
                 'name',
                 'surname',
                 'email',
@@ -38,11 +38,11 @@ class User implements UserInterface
         return new Users(array_map(fn (array $userData) => $this->createDTO($userData), $usersData));
     }
 
-    public function getById(int $id): ?UserDTO
+    public function getByGuid(string $guid): ?UserDTO
     {
         $userData = $this->connection->createQueryBuilder()
             ->select(
-                'id',
+                'guid',
                 'name',
                 'surname',
                 'email',
@@ -53,7 +53,7 @@ class User implements UserInterface
             )
             ->from('users')
             ->where('id = ?')
-            ->setParameter(0, $id)
+            ->setParameter(0, $guid)
             ->fetchAssociative();
 
         if (false === $userData) {
@@ -67,7 +67,7 @@ class User implements UserInterface
     {
         $userData = $this->connection->createQueryBuilder()
             ->select(
-                'id',
+                'guid',
                 'name',
                 'surname',
                 'email',
@@ -91,7 +91,7 @@ class User implements UserInterface
     private function createDTO(array $userData): UserDTO
     {
         return new UserDTO(
-            $userData['id'],
+            $userData['guid'],
             $userData['name'],
             $userData['surname'],
             $userData['email'],

@@ -11,7 +11,7 @@ use JsonSerializable;
 class UserDTO implements JsonSerializable
 {
     public function __construct(
-        public readonly int $id,
+        public readonly string $guid,
         public readonly string $name,
         public readonly string $surname,
         public readonly string $email,
@@ -25,7 +25,7 @@ class UserDTO implements JsonSerializable
     public function jsonSerialize(): mixed
     {
         return  [
-            'id' => $this->id,
+            'guid' => $this->guid,
             'name' => $this->name,
             'surname' => $this->surname,
             'email' => $this->email,

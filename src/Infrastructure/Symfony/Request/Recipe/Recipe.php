@@ -50,8 +50,8 @@ class Recipe extends Request implements RecipeRequestInteface
                 self::FIELD_DESCRIPTION => [
                     new Type('string'),
                     new Length(
-                        min: 10,
-                        max: 1000,
+                        min: 8,
+                        max: 1024,
                         minMessage: 'Your description must be at least {{ limit }} characters long',
                         maxMessage: 'Your description cannot be longer than {{ limit }} characters',
                     ),
