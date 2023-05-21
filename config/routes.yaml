@@ -9,76 +9,69 @@ controllers:
     resource: ../src/Controller/
     type: attribute
 
-getRecipes:
+recipes:
     path: /recipes/
     controller: App\Controller\RecipeController::get
     methods: GET
-
-getRecipesByID:
+recipe:
     path: /recipes/{id}
     controller: App\Controller\RecipeController::getByID
     methods: GET
-
-postRecipe:
+recipe_create:
     path: /recipes
     controller: App\Controller\RecipeController::create
     methods: POST
-
-updateRecipe:
+recipe_update:
     path: /recipes/{id}
     controller: App\Controller\RecipeController::update
-    methods: PUT
-    
-deleteRecipes:
+    methods: PUT 
+recipe_delete:
     path: /recipes/{id}
     controller: App\Controller\RecipeController::delete
     methods: DELETE
 
-getUsers:
+users:
     path: /users
     controller: App\Controller\UserController::get
     methods: GET
-getUserByID:
+user:
     path: /users/{id}
     controller: App\Controller\UserController::getByID
     methods: GET
-
-postUser:
+user_create:
     path: /users
     controller: App\Controller\UserController::create
     methods: POST
-
-updateUser:
+user_update:
     path: /users/{id}
     controller: App\Controller\UserController::update
-    methods: PUT
-    
-deleteUser:
+    methods: PUT 
+user_delete:
     path: /users/{id}
     controller: App\Controller\UserController::delete
     methods: DELETE
+user_getByEmail:
+  path: /users/get-by-email
+  controller: App\Controller\UserController::getByEmail
+  methods: POST
 
-
-getIngredients:
+ingredients:
     path: /ingredients
     controller: App\Controller\IngredientController::get
     methods: GET
-getIngredientsByID:
+ingredient:
     path: /ingredients/{id}
     controller: App\Controller\IngredientController::getByID
     methods: GET
-
-postIngredients:
+ingredient_create:
     path: /ingredients
     controller: App\Controller\IngredientController::create
     methods: POST
-
-updateIngredients:
+ingredient_update:
     path: /ingredients/{id}
     controller: App\Controller\IngredientController::update
-    methods: PUT
-    
-deleteIngredients:
+    methods: PUT 
+ingredient_delete:
     path: /ingredients/{id}
     controller: App\Controller\IngredientController::delete
     methods: DELETE

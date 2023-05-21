@@ -11,6 +11,7 @@ use App\DTO\UserDTO;
 use App\DTO\RequestParams\UserParams;
 use App\Query\UserInterface;
 use App\Exception\NotFound\UserNotFoundException;
+use App\DTO\RequestParams\UserByEmailParams;
 
 class UserService
 {
@@ -67,5 +68,16 @@ class UserService
         $user = $this->findUser($id);
         $user->update($params);
         $this->repository->save($user);
+    }
+
+    public function getByEmail(UserByEmailParams $params): UserDTO
+    {
+        $user = $this->userQuery->getByEmail($params->email);
+
+        if (null === $user) {
+            throw new UserNotFoundException($params->email);
+        }
+
+        return $user;
     }
 }

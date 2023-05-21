@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Service\UserService;
 use Exception;
 use App\Request\User\User as UserRequest;
+use App\Request\User\UserByEmail;
 
 class UserController extends AbstractController
 {
@@ -63,6 +64,15 @@ class UserController extends AbstractController
             $this->service->delete($id);
 
             return $this->jsonResponseNoContent();
+        } catch (Exception $e) {
+            return $this->exceptionJsonResponse($e);
+        }
+    }
+
+    public function getByEmail(UserByEmail $request): JsonResponse
+    {
+        try {
+            return $this->jsonResponse($this->service->getByEmail($request->params()));
         } catch (Exception $e) {
             return $this->exceptionJsonResponse($e);
         }

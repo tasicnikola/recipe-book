@@ -41,19 +41,44 @@ class User implements UserInterface
     public function getById(int $id): ?UserDTO
     {
         $userData = $this->connection->createQueryBuilder()
-        ->select(
-            'id',
-            'name',
-            'surname',
-            'email',
-            'username',
-            'password',
-            'created_at',
-            'updated_at'
-        )
-        ->from('users')
+            ->select(
+                'id',
+                'name',
+                'surname',
+                'email',
+                'username',
+                'password',
+                'created_at',
+                'updated_at'
+            )
+            ->from('users')
             ->where('id = ?')
             ->setParameter(0, $id)
+            ->fetchAssociative();
+
+        if (false === $userData) {
+            return null;
+        }
+
+        return $this->createDTO($userData);
+    }
+
+    public function getByEmail(string $email): ?UserDTO
+    {
+        $userData = $this->connection->createQueryBuilder()
+            ->select(
+                'id',
+                'name',
+                'surname',
+                'email',
+                'username',
+                'password',
+                'created_at',
+                'updated_at'
+            )
+            ->from('users')
+            ->where('email = :email')
+            ->setParameter('email', $email)
             ->fetchAssociative();
 
         if (false === $userData) {

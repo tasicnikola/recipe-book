@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use App\Request\Recipe\Recipe as RecipeRequestInteface;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Url;
+use Symfony\Component\Validator\Constraints\All;
 
 class Recipe extends Request implements RecipeRequestInteface
 {
@@ -51,18 +52,21 @@ class Recipe extends Request implements RecipeRequestInteface
                     new Length(
                         min: 10,
                         max: 1000,
-                        minMessage: 'Your username must be at least {{ limit }} characters long',
-                        maxMessage: 'Your username cannot be longer than {{ limit }} characters',
+                        minMessage: 'Your description must be at least {{ limit }} characters long',
+                        maxMessage: 'Your description cannot be longer than {{ limit }} characters',
                     ),
                 ],
+                self::FIELD_USER_ID => [
+                    new Type(['type' => 'numeric'])
+                ],
                 self::FIELD_INGREDIENTS => [
-                    new Collection(
-                        [
+                    new All([
+                        new Collection([
                             'name' => [
                                 new NameRequirements(),
                             ],
-                        ]
-                    )
+                        ]),
+                    ]),
                 ],
             ]
         );

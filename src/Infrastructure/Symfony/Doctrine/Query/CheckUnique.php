@@ -15,6 +15,10 @@ class CheckUnique implements CheckUniqueInterface
 
     public function checkUnique(array $uniqueParams, string $table, ?int $id): array
     {
+        if (empty($uniqueParams)) {
+            return [];
+        }
+        
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select($uniqueParams)
             ->from($table);

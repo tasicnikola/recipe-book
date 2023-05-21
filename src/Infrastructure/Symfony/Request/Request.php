@@ -35,7 +35,6 @@ abstract class Request
         }
 
         $method = $request->getMethod();
-
         $this->httpRequest = $request;
         $this->validator = $validator;
         $this->mergeAllParameters();
@@ -50,7 +49,6 @@ abstract class Request
     /**
      * @return array<string, string>
      */
-
     protected function getUnique(): array
     {
         return [];
