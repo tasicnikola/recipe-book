@@ -40,30 +40,30 @@ class Recipe extends Request implements RecipeRequestInteface
     {
         return new Collection(
             [
-             self::FIELD_TITLE       => [
-                                            new NameRequirements(),
-                                           ],
-             self::FIELD_IMAGE_URL   => [
-                                            new Url(),
-                                           ],
-             self::FIELD_DESCRIPTION => [
-                                            new Type('string'),
-                                            new Length(
-                                             min: 10,
-                                             max: 1000,
-                                             minMessage: 'Your username must be at least {{ limit }} characters long',
-                                             maxMessage: 'Your username cannot be longer than {{ limit }} characters',
-                                         ),
-                                           ],
-             self::FIELD_INGREDIENTS => [
+                self::FIELD_TITLE       => [
+                    new NameRequirements(),
+                ],
+                self::FIELD_IMAGE_URL   => [
+                    new Url(),
+                ],
+                self::FIELD_DESCRIPTION => [
+                    new Type('string'),
+                    new Length(
+                        min: 10,
+                        max: 1000,
+                        minMessage: 'Your username must be at least {{ limit }} characters long',
+                        maxMessage: 'Your username cannot be longer than {{ limit }} characters',
+                    ),
+                ],
+                self::FIELD_INGREDIENTS => [
                     new Collection(
-                     [
-                         'name' => [
-                                 new NameRequirements(),
-                                ],
+                        [
+                            'name' => [
+                                new NameRequirements(),
+                            ],
                         ]
-                 )
-                                           ],
+                    )
+                ],
             ]
         );
     }

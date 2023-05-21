@@ -23,7 +23,8 @@ class Recipe implements RecipeInterface
 
     public function getAll(): ?Recipes
     {
-        $recipesData = $this->connection->createQueryBuilder('recipes')
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder
             ->select(
                 'r.id as recipe_id',
                 'r.title as recipe_title',
@@ -39,19 +40,34 @@ class Recipe implements RecipeInterface
             )
             ->from('recipes', 'r')
             ->innerJoin('r', 'recipe_ingredient', 'ri', 'r.id = ri.recipe_id')
-            ->innerJoin('ri', 'ingredients', 'i', 'i.id = ri.ingredient_id')
-            ->fetchAllAssociative();
+            ->innerJoin('ri', 'ingredients', 'i', 'i.id = ri.ingredient_id');
+
+        $recipesData = $queryBuilder->fetchAllAssociative();
 
         $recipesWithIngredients = [];
         foreach ($recipesData as $recipeData) {
             $recipeId = $recipeData['recipe_id'];
             if (!isset($recipesWithIngredients[$recipeId])) {
                 $recipesWithIngredients[$recipeId] = [
-                                                      'data'        => $recipeData,
-                                                      'ingredients' => [],
-                                                     ];
+                    'data' => [
+                        'id' => $recipeData['recipe_id'],
+                        'title' => $recipeData['recipe_title'],
+                        'image_url' => $recipeData['recipe_image_url'],
+                        'description' => $recipeData['recipe_description'],
+                        'user' => $recipeData['recipe_user'],
+                        'created_at' => $recipeData['recipe_created_at'],
+                        'updated_at' => $recipeData['recipe_updated_at'],
+                    ],
+                    'ingredients' => [],
+                ];
             }
-            $recipesWithIngredients[$recipeId]['ingredients'][] = $this->ingredientQuery->createDTO($recipeData);
+            $ingredient = [
+                'id' => $recipeData['ingredient_id'],
+                'name' => $recipeData['ingredient_name'],
+                'created_at' => $recipeData['ingredient_created_at'],
+                'updated_at' => $recipeData['ingredient_updated_at'],
+            ];
+            $recipesWithIngredients[$recipeId]['ingredients'][] = $this->ingredientQuery->createDTO($ingredient);
         }
 
         $recipeDTOs = [];
@@ -64,7 +80,8 @@ class Recipe implements RecipeInterface
 
     public function getById(int $id): ?RecipeDTO
     {
-        $recipeData = $this->connection->createQueryBuilder()
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder
             ->select(
                 'r.id as recipe_id',
                 'r.title as recipe_title',
@@ -81,22 +98,25 @@ class Recipe implements RecipeInterface
             ->from('recipes', 'r')
             ->innerJoin('r', 'recipe_ingredient', 'ri', 'r.id = ri.recipe_id')
             ->innerJoin('ri', 'ingredients', 'i', 'i.id = ri.ingredient_id')
-            ->where('r.id = :id')
-            ->setParameter('id', $id)
-            ->fetchAllAssociative();
+            ->where('r.id = :recipeId')
+            ->setParameter('recipeId', $id);
 
-        if (false === $recipeData) {
+        $recipeData = $queryBuilder->fetchAllAssociative();
+
+        if (empty($recipeData)) {
             return null;
         }
-        $ingredientsArray = [];
 
+        $ingredientsArray = [];
         $recipe = [];
+
         foreach ($recipeData as $row) {
-            $ingredient = [];
-            $ingredient['id'] = $row['ingredient_id'];
-            $ingredient['name'] = $row['ingredient_name'];
-            $ingredient['created_at'] = $row['ingredient_created_at'];
-            $ingredient['updated_at'] = $row['ingredient_updated_at'];
+            $ingredient = [
+                'id' => $row['ingredient_id'],
+                'name' => $row['ingredient_name'],
+                'created_at' => $row['ingredient_created_at'],
+                'updated_at' => $row['ingredient_updated_at'],
+            ];
             $ingredientsArray[] = $this->ingredientQuery->createDTO($ingredient);
 
             $recipe['id'] = $row['recipe_id'];

@@ -9,7 +9,6 @@ class DefaultController extends AbstractController
 {
     public function handleOptionsRequest()
     {
-
         return new JsonResponse("OK");
     }
 }
