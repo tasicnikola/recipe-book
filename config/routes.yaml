@@ -1,77 +1,95 @@
 options_request:
-    path: /{request}
-    controller: App\Controller\DefaultController::handleOptionsRequest
-    methods: OPTIONS
-    requirements:
-        request: ".+"
-        
+  path: /{request}
+  controller: App\Controller\DefaultController::handleOptionsRequest
+  methods: OPTIONS
+  requirements:
+    request: ".+"
+
 controllers:
-    resource: ../src/Controller/
-    type: attribute
+  resource: ../src/Controller/
+  type: attribute
 
 recipes:
-    path: /recipes/
-    controller: App\Controller\RecipeController::get
-    methods: GET
+  path: /recipes/
+  controller: App\Controller\RecipeController::getAll
+  methods: GET
 recipe:
-    path: /recipes/{id}
-    controller: App\Controller\RecipeController::getByID
-    methods: GET
+  path: /recipes/{guid}
+  controller: App\Controller\RecipeController::get
+  methods: GET
+  requirements:
+    guid: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
 recipe_create:
-    path: /recipes
-    controller: App\Controller\RecipeController::create
-    methods: POST
+  path: /recipes
+  controller: App\Controller\RecipeController::create
+  methods: POST
 recipe_update:
-    path: /recipes/{id}
-    controller: App\Controller\RecipeController::update
-    methods: PUT 
+  path: /recipes/{guid}
+  controller: App\Controller\RecipeController::update
+  methods: PUT
+  requirements:
+    guid: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
 recipe_delete:
-    path: /recipes/{id}
-    controller: App\Controller\RecipeController::delete
-    methods: DELETE
+  path: /recipes/{guid}
+  controller: App\Controller\RecipeController::delete
+  methods: DELETE
+  requirements:
+    guid: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
 
 users:
-    path: /users
-    controller: App\Controller\UserController::get
-    methods: GET
+  path: /users
+  controller: App\Controller\UserController::getAll
+  methods: GET
 user:
-    path: /users/{id}
-    controller: App\Controller\UserController::getByID
-    methods: GET
+  path: /users/{guid}
+  controller: App\Controller\UserController::get
+  methods: GET
+  requirements:
+    guid: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
 user_create:
-    path: /users
-    controller: App\Controller\UserController::create
-    methods: POST
+  path: /users
+  controller: App\Controller\UserController::create
+  methods: POST
 user_update:
-    path: /users/{id}
-    controller: App\Controller\UserController::update
-    methods: PUT 
+  path: /users/{guid}
+  controller: App\Controller\UserController::update
+  methods: PUT
+  requirements:
+    guid: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
 user_delete:
-    path: /users/{id}
-    controller: App\Controller\UserController::delete
-    methods: DELETE
+  path: /users/{guid}
+  controller: App\Controller\UserController::delete
+  methods: DELETE
+  requirements:
+    guid: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
 user_getByEmail:
   path: /users/get-by-email
   controller: App\Controller\UserController::getByEmail
   methods: POST
 
 ingredients:
-    path: /ingredients
-    controller: App\Controller\IngredientController::get
-    methods: GET
+  path: /ingredients
+  controller: App\Controller\IngredientController::getAll
+  methods: GET
 ingredient:
-    path: /ingredients/{id}
-    controller: App\Controller\IngredientController::getByID
-    methods: GET
+  path: /ingredients/{guid}
+  controller: App\Controller\IngredientController::get
+  methods: GET
+  requirements:
+    guid: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
 ingredient_create:
-    path: /ingredients
-    controller: App\Controller\IngredientController::create
-    methods: POST
+  path: /ingredients
+  controller: App\Controller\IngredientController::create
+  methods: POST
 ingredient_update:
-    path: /ingredients/{id}
-    controller: App\Controller\IngredientController::update
-    methods: PUT 
+  path: /ingredients/{guid}
+  controller: App\Controller\IngredientController::update
+  methods: PUT
+  requirements:
+    guid: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
 ingredient_delete:
-    path: /ingredients/{id}
-    controller: App\Controller\IngredientController::delete
-    methods: DELETE
+  path: /ingredients/{guid}
+  controller: App\Controller\IngredientController::delete
+  methods: DELETE
+  requirements:
+    guid: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'

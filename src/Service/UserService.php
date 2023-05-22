@@ -21,14 +21,14 @@ class UserService
     ) {
     }
 
-    public function get(): ?Users
+    public function getAll(): ?Users
     {
         return $this->userQuery->getAll();
     }
 
-    public function getByGuid(string $guid): ?UserDTO
+    public function get(string $guid): ?UserDTO
     {
-        $user = $this->userQuery->getByGuid($guid);
+        $user = $this->userQuery->get($guid);
 
         if (null === $user) {
             throw new UserNotFoundException($guid);

@@ -18,14 +18,14 @@ class IngredientService
     ) {
     }
 
-    public function get(): ?Ingredients
+    public function getAll(): ?Ingredients
     {
         return $this->query->getAll();
     }
 
-    public function getByID(string $guid): ?IngredientDTO
+    public function get(string $guid): ?IngredientDTO
     {
-        $ingredient = $this->query->getByGuid($guid);
+        $ingredient = $this->query->get($guid);
 
         if (null === $ingredient) {
             throw new IngredientNotFoundException($guid);

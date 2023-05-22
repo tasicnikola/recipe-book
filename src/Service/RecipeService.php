@@ -28,14 +28,14 @@ class RecipeService
     ) {
     }
 
-    public function get(): ?Recipes
+    public function getAll(): ?Recipes
     {
         return $this->query->getAll();
     }
 
-    public function getByGuid(string $guid): ?RecipeDTO
+    public function get(string $guid): ?RecipeDTO
     {
-        $recipe = $this->query->getByGuid($guid);
+        $recipe = $this->query->get($guid);
 
         if (null === $recipe) {
             throw new  RecipeNotFoundException($guid);

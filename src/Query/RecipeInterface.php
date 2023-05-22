@@ -11,5 +11,5 @@ interface RecipeInterface
 {
     public function getAll(): ?Recipes;
 
-    public function getByGuid(string $guid): ?RecipeDTO;
+    public function get(string $guid): ?RecipeDTO;
 }

@@ -18,19 +18,19 @@ class UserController extends AbstractController
     {
     }
 
-    public function get(): JsonResponse
+    public function getAll(): JsonResponse
     {
         try {
-            return $this->jsonResponse($this->service->get());
+            return $this->jsonResponse($this->service->getAll());
         } catch (Exception $e) {
             return  $this->exceptionJsonResponse($e);
         }
     }
 
-    public function getByID(string $guid): JsonResponse
+    public function get(string $guid): JsonResponse
     {
         try {
-            return $this->jsonResponse($this->service->getByGuid($guid));
+            return $this->jsonResponse($this->service->get($guid));
         } catch (Exception $e) {
             return  $this->exceptionJsonResponse($e);
         }

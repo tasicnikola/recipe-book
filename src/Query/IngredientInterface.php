@@ -11,5 +11,5 @@ interface IngredientInterface
 {
     public function getAll(): Ingredients;
 
-    public function getByGuid(string $guid): ?IngredientDTO;
+    public function get(string $guid): ?IngredientDTO;
 }

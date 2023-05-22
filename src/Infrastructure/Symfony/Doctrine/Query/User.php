@@ -38,7 +38,7 @@ class User implements UserInterface
         return new Users(array_map(fn (array $userData) => $this->createDTO($userData), $usersData));
     }
 
-    public function getByGuid(string $guid): ?UserDTO
+    public function get(string $guid): ?UserDTO
     {
         $userData = $this->connection->createQueryBuilder()
             ->select(

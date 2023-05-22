@@ -78,7 +78,7 @@ class Recipe implements RecipeInterface
         return new Recipes($recipeDTOs);
     }
 
-    public function getByGuid(string $guid): ?RecipeDTO
+    public function get(string $guid): ?RecipeDTO
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder
@@ -139,7 +139,7 @@ class Recipe implements RecipeInterface
             $recipeData['title'],
             $recipeData['image_url'],
             $recipeData['description'],
-            $this->userQuery->getByGuid($recipeData['user']),
+            $this->userQuery->get($recipeData['user']),
             $ingredients,
             new DateTimeImmutable($recipeData['created_at']),
             $recipeData['updated_at'] ? new DateTime($recipeData['updated_at']) : null,

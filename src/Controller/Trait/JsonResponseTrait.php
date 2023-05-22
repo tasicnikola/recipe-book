@@ -19,10 +19,10 @@ trait JsonResponseTrait
         return new JsonResponse("", JsonResponse::HTTP_NO_CONTENT);
     }
 
-    private function jsonResponseCreated(string $id): JsonResponse
+    private function jsonResponseCreated(string $guid): JsonResponse
     {
         return new JsonResponse(
-            ['id' => $id],
+            ['guid' => $guid],
             JsonResponse::HTTP_CREATED
         );
     }

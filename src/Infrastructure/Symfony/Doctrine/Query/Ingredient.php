@@ -34,7 +34,7 @@ class Ingredient implements IngredientInterface
         return new Ingredients(array_map(fn (array $ingredientData) => $this->createDTO($ingredientData), $ingredientsData));
     }
 
-    public function getByGuid(string $guid): ?IngredientDTO
+    public function get(string $guid): ?IngredientDTO
     {
         $ingredientData = $this->connection->createQueryBuilder()
             ->select(
